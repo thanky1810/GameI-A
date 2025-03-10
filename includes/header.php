@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php
-    echo "hello world";
-     ?>
-</body>
-</html>
+<link rel="stylesheet" href="../assets/css/header.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<header>
+        <div class="logo">
+            <img src="../assets/img/10.jpg" alt="GAME I&R Online">
+            <span>GAME I&R Online</span>
+        </div>
+        <div class="login-btn">
+            <a href="Signup_Login.html">🔑 Đăng nhập</a>
+        </div>
+</header>
