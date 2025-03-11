@@ -9,7 +9,7 @@
 <body>
     <div class="background">
         <!-- Nút Home -->
-        <button class="home-btn" onclick="location.href='Home.html'">Home</button>
+        <button class="home-btn" onclick="location.href='Home.php'">Home</button>
         
         <div class="container">
             <div class="form-box">

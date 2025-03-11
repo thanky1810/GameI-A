@@ -6,6 +6,6 @@
             <span>GAME I&R Online</span>
         </div>
         <div class="login-btn">
-            <a href="Signup_Login.html">🔑 Đăng nhập</a>
+            <a href="../Pages/login.php">🔑 Đăng nhập</a>
         </div>
 </header>
