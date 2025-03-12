@@ -62,7 +62,6 @@
     <?php include "../includes/footer.php"?>
 </body>
 <script src="../assets/js/game.js"></script>
-
 </html>
 
 

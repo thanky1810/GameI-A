@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/Home.css">
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -16,7 +17,7 @@
             <div class="game-list">
                 <div class="game-item" data-id="caro">
                     <img src="../assets/img/12.jpg" alt="Caro">
-                    <a href="caro.html">
+                    <a href="../Pages/caro.php">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-caro">35</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -25,7 +26,7 @@
                 </div>
                 <div class="game-item" data-id="sudoku">
                     <img src="../assets/img/13.jpg" alt="Sudoku">
-                    <a href="sudoku.html">
+                    <a href="../Pages/sodoku.php">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-sudoku">25</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -34,7 +35,7 @@
                 </div>
                 <div class="game-item" data-id="minesweeper">
                     <img src="../assets/img/11.jpg" alt="Minesweeper">
-                    <a href="min.html">
+                    <a href="../Pages/min.php">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-minesweeper">19</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -47,7 +48,7 @@
         <section class="new-game">
             <h2>Mới</h2>
             <div class="game-item">
-                <a href="min.html">
+                <a href="../Pages/min.php">
                     <img src="../assets/img/11.jpg" alt="Minesweeper">
                 </a>
             </div>

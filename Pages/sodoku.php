@@ -60,7 +60,7 @@
                 <p>Hãy thử sức trong chế độ một người chơi để rèn luyện tư duy logic, phát triển kỹ năng quan sát và tìm ra những chiến thuật giải đố hiệu quả nhất. Càng chơi nhiều, bạn sẽ càng nâng cao khả năng suy luận, tích lũy kinh nghiệm quý báu và chinh phục những thử thách khó hơn, tiến xa hơn trên bảng xếp hạng Sudoku!</p>
             </div>
             <div class="game-image">
-                <img src="imgs/8.jpg" alt="Min">
+                <img src="../assets/img/8.jpg" alt="Min">
             </div>
         </div>
     </main>
