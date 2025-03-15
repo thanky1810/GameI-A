@@ -50,7 +50,7 @@ span {
 #user-top-name {
   font-size: 1rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--header--white);
   padding: 5px 10px;
   border: 2px solid #66b6db;
   border-radius: 5px;
@@ -92,7 +92,7 @@ main {
 
 .user-details h2 {
   font-size: 1.5rem;
-  color: #ffffff;
+  color: var(--header--white);
   margin-bottom: 5px;
 }
 
@@ -111,7 +111,7 @@ main {
 .back-btn {
   padding: 10px 20px;
   background-color: #66b6db79;
-  color: white;
+  color: var(--header--white);
   font-size: 1rem;
   font-weight: bold;
   text-decoration: none;
@@ -132,7 +132,7 @@ main {
 
 .stats h3 {
   font-size: 1.4rem;
-  color: #ffffff;
+  color: var(--header--white);
   margin-bottom: 15px;
 }
 
