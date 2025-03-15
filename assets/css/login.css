@@ -22,7 +22,7 @@ body {
   top: 20px;
   left: 20px;
   background: black;
-  color: white;
+  color: var(--white);
   border: none;
   padding: 10px 20px;
   font-size: 16px;
@@ -33,7 +33,7 @@ body {
 }
 
 .home-btn:hover {
-  background: white;
+  background: var(--white);
   color: black;
 }
 
@@ -48,7 +48,7 @@ body {
 }
 
 h2 {
-  color: #fff;
+  color: var(--white);
   margin-bottom: 20px;
   font-size: 24px;
 }
@@ -65,7 +65,7 @@ input {
   border-radius: 5px;
   font-size: 16px;
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -82,13 +82,13 @@ input::placeholder {
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  color: white;
+  color: var(--white);
   margin-top: 10px;
   transition: 0.3s;
 }
 
 .btn:hover {
-  background: white;
+  background: var(--white);
   color: black;
 }
 
@@ -106,5 +106,5 @@ a {
 
 a:hover {
   text-decoration: underline;
-  color: white;
+  color: var(--white);
 }
