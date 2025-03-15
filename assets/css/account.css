@@ -1,0 +1,101 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#account-info {
+  background: #1e2633;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 900px;
+  padding: 20px;
+}
+
+.account-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3a4d66;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  line-height: 2;
+}
+
+.avatar img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 15px;
+}
+
+.user-details h2 {
+  font-size: 1.5rem;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+
+.user-details p {
+  font-size: 1.1rem;
+  color: #157c34;
+}
+
+.back-home {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background-color: #66b6db79;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 40px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #81b4f6;
+}
+
+.stats {
+  padding: 20px;
+  background: #2c3e50;
+  border-radius: 10px;
+}
+
+.stats h3 {
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 15px;
+}
+
+.stats ul {
+  list-style: none;
+  padding: 0;
+  line-height: 3;
+}
+
+.stats li {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #aaa;
+  display: flex; /*Định*/
+  justify-content: space-between; /* Chia đều khoảng cách giữa nhãn và giá trị */
+  align-items: center;
+}
+
+.stats li span.label {
+  color: #66b6db;
+  font-weight: bold;
+}
+
+.stats li span {
+  color: var(--white);
+}
