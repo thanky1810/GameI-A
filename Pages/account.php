@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/account.css">
 </head>
 <body>
@@ -16,14 +16,14 @@
         <section id="account-info">
             <div class="account-header">
                 <div class="avatar">
-                    <img src="imgs/5.jpg" alt="Avatar">
+                    <img src="../assets/img/5.jpg" alt="Avatar">
                 </div>
                 <div class="user-details">
                     <h2 id="username">GUEST0232</h2>
                     <p id="status">Trực tuyến</p>
                 </div>
                 <div class="back-home">
-                    <a href="Home.html" class="back-btn">Home</a>
+                    <a href="../Pages/home.php" class="back-btn">Home</a>
                 </div>
             </div>
             <div class="stats">
