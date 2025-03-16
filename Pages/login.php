@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $hashedPassword)) {
                 // Đăng nhập thành công
                 $_SESSION['user'] = $userName;
+                $_SESSION['ID'] = $row['ID'];
                 header("Location: home.php"); 
                 exit();
             } else {
