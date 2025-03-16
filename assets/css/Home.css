@@ -1,3 +1,4 @@
+@import url(./main.css);
 main {
   max-width: 1100px;
   margin: 50px auto;
@@ -9,6 +10,11 @@ h2 {
   margin-bottom: 20px;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+body {
+  color: var(--white);
+  background-color: var(--background-color);
 }
 
 .game-list {
