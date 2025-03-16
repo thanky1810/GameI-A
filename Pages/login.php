@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include "../includes/database.php";
 
 // Hàm tạo tên không trùng lặp
@@ -53,7 +54,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['login-submit'])) {
+        // Lấy dữ liệu từ form
+        $userName = filter_input(INPUT_POST, "login-userName", FILTER_SANITIZE_SPECIAL_CHARS);
+        $password = $_POST['login-password'];
+
+        // Kiểm tra xem tài khoản có tồn tại không
+        $sql = "SELECT * FROM user WHERE userName = '$userName'";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $hashedPassword = $row['password']; // Mật khẩu đã hash trong CSDL
+
+            // So sánh mật khẩu nhập vào với mật khẩu trong CSDL
+            if (password_verify($password, $hashedPassword)) {
+                // Đăng nhập thành công
+                $_SESSION['user'] = $userName;
+                header("Location: home.php"); 
+                exit();
+            } else {
+                $error = "Mật khẩu không đúng!";
+            }
+        } else {
+            $error = "Tên đăng nhập không tồn tại!";
+        }
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="vi">
