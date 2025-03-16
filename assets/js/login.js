@@ -39,16 +39,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // Xử lý đăng nhập
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const username = document.getElementById("login-username").value;
-        const password = document.getElementById("login-password").value;
+    document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("login-form");
 
-        if (username === "" || password === "") {
-            alert("Vui lòng nhập username và password!");
-            return;
+        if (loginForm) {
+            loginForm.addEventListener("submit", function (event) {
+                const username = document.getElementById("login-username").value.trim();
+                const password = document.getElementById("login-password").value.trim();
+
+                if (username === "" || password === "") {
+                    event.preventDefault(); // Ngăn form gửi đi nếu có lỗi
+                    alert("Vui lòng nhập đầy đủ thông tin đăng nhập!");
+                }
+            });
         }
-
-        alert("Đăng nhập thành công! Chào mừng " + username + "!");
     });
+
 });
