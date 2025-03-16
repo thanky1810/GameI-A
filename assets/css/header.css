@@ -5,6 +5,15 @@
   font-family: var(--text--font);
 }
 
+a {
+  text-decoration: none; /* Loại bỏ gạch chân */
+  color: inherit; /* Kế thừa màu sắc từ phần tử cha */
+}
+
+a:visited {
+  color: inherit; /* Đặt màu sắc giống với liên kết chưa truy cập */
+}
+
 header {
   display: flex;
   justify-content: space-between;

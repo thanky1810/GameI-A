@@ -5,16 +5,18 @@
 <link rel="stylesheet" href="../assets/css/header.css">
 <link rel="stylesheet" href="../assets/css/main.css">
 <header>
-        <div class="logo">
-            <img src="../assets/img/10.jpg" alt="GAME I&R Online">
-            <span>GAME I&R Online</span>
-        </div>
+        <a href="../Pages/home.php">
+            <div class="logo">
+                <img src="../assets/img/10.jpg" alt="GAME I&R Online">
+                <span>GAME I&R Online</span>
+            </div>
+         </a>
         <div class="login-btn">
             <?php
                 if (isset($_GET['logout'])) {
                     session_unset();
                     session_destroy();
-                    header("Location: ../Pages/login.php"); // Chuyển hướng về trang đăng nhập
+                    header("Location: ../Pages/home.php"); 
                     exit();
                 }
                 if(!isset($_SESSION["user"])){

@@ -1,3 +1,6 @@
+<?php
+    require_once '../includes/functions.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +20,7 @@
             <div class="game-list">
                 <div class="game-item" data-id="caro">
                     <img src="../assets/img/12.jpg" alt="Caro">
-                    <a href="../Pages/caro.php">
+                    <a href="<?php echo logining('../Pages/caro.php'); ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-caro">35</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -26,7 +29,7 @@
                 </div>
                 <div class="game-item" data-id="sudoku">
                     <img src="../assets/img/13.jpg" alt="Sudoku">
-                    <a href="../Pages/sodoku.php">
+                    <a href="<?php echo logining('../Pages/sodoku.php'); ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-sudoku">25</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -35,7 +38,7 @@
                 </div>
                 <div class="game-item" data-id="minesweeper">
                     <img src="../assets/img/11.jpg" alt="Minesweeper">
-                    <a href="../Pages/min.php">
+                    <a href="<?php echo logining('../Pages/min.php'); ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-minesweeper">19</span> người chơi</p>
                             <button class="play-button">🎮 Chơi</button>
@@ -48,7 +51,7 @@
         <section class="new-game">
             <h2>Mới</h2>
             <div class="game-item">
-                <a href="../Pages/min.php">
+                <a href="<?php echo logining('../Pages/min.php'); ?>">
                     <img src="../assets/img/11.jpg" alt="Minesweeper">
                 </a>
             </div>
