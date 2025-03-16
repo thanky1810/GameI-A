@@ -1,52 +1,106 @@
+<?php 
+include "../includes/database.php";
+
+// Hàm tạo tên không trùng lặp
+function randomName($conn) {
+    do {
+        $name = "#" . rand(1000, 9999); 
+        $sql = "SELECT COUNT(*) as count FROM user WHERE name = '$name'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+    } while ($row['count'] > 0); 
+
+    return $name;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!$conn) {
+        die("Lỗi kết nối MySQL: " . mysqli_connect_error());
+    }
+
+    // Kiểm tra nếu là đăng ký
+    if (isset($_POST['register-submit'])) {
+        $userName = filter_input(INPUT_POST, "register-userName", FILTER_SANITIZE_SPECIAL_CHARS);
+        $password = $_POST['register-password']; 
+        $confirmPassword = $_POST['register-confirm-password']; 
+
+        // Kiểm tra mật khẩu có trùng nhau không
+        if ($password !== $confirmPassword) {
+            echo "Mật khẩu không khớp! Vui lòng nhập lại.";
+        } else {
+            // Kiểm tra xem tên đăng nhập đã tồn tại chưa
+            $sql = "SELECT * FROM user WHERE userName = '$userName'";
+            $result = mysqli_query($conn, $sql);
+
+            if(mysqli_num_rows($result) > 0){
+                echo "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.";
+            } else {
+                // Mã hóa mật khẩu trước khi lưu vào database
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $name = randomName($conn);
+                $userRole = "user";
+
+                // Thêm người dùng vào database
+                $sql = "INSERT INTO user (userName, password, role, name) VALUES ('$userName', '$hashedPassword', '$userRole', '$name')";
+                if (mysqli_query($conn, $sql)) {
+                    echo "Đăng ký thành công!";
+                    header('Location: home.php');
+                    exit();
+                } else {
+                    echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
+                }
+            }
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Signup</title>
-    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body>
     <div class="background">
-        <!-- Nút Home -->
         <button class="home-btn" onclick="location.href='Home.php'">Home</button>
         
         <div class="container">
             <div class="form-box">
-                <!-- Tiêu đề Form -->
                 <h2 id="form-title">Log in</h2>
                 
                 <!-- Form Đăng nhập -->
-                <form id="login-form">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="login-form" method="post">
                     <div class="form-group">
-                        <input type="text" id="login-username" placeholder="Username" required>
+                        <input name="login-userName" type="text" id="login-username" placeholder="Username" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="login-password" placeholder="Password" required>
+                        <input name="login-password" type="password" id="login-password" placeholder="Password" required>
                     </div>
-                    <button type="submit" class="btn">Log in</button>
+                    <button name="login-submit" type="submit" class="btn">Log in</button>
                     <p>Don't have an account? <a href="#" id="switch-to-register">Signup</a></p>
                 </form>
                 
-                <!-- Form Đăng ký (Ẩn) --> 
-                <form id="register-form" style="display: none;">
+                <!-- Form Đăng ký -->
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="register-form" style="display: none;" method="post">
                     <div class="form-group">
-                        <input type="text" id="register-username" placeholder="Username" required>
+                        <input name="register-userName" type="text" id="register-username" placeholder="Username" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="register-email" placeholder="Email" required>
+                        <input name="register-password" type="password" id="register-password" placeholder="Password" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="register-password" placeholder="Password" required>
+                        <input name="register-confirm-password" type="password" id="register-confirm-password" placeholder="Confirm Password" required>
                     </div>
-                    <button type="submit" class="btn">Sign up</button>
+                    <button name="register-submit" type="submit" class="btn">Sign up</button>
                     <p>Already have an account? <a href="#" id="switch-to-login">Log in</a></p>
                 </form>
             </div>
         </div>
     </div>
-</body>
 
-<script src="../assets/js/login.js"></script>
+    <script src="../assets/js/login.js"></script>
+</body>
 </html>
