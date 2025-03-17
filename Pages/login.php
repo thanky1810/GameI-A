@@ -46,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_query($conn, $sql)) {
                     echo "Đăng ký thành công!";
                     header('Location: home.php');
+                    $_SESSION['user'] = $userName;
+                    $_SESSION['ID'] = $row['ID'];
                     exit();
                 } else {
                     echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
