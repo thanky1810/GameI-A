@@ -5,24 +5,39 @@ if (!isset($_SESSION["user"])) {
     die("404 Not Found"); 
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/pGame.css">
 </head>
 <body>
-    <!-- Header -->
-    <?php include "../includes/header.php"?>
+
+<?php
+    include "../includes/header.php"
+?>
     <main>
-        <h1>DÒ MÌN<span class="stars">⭐⭐⭐⭐⭐</span></h1>
+        <h1>DÒ MÌN <span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
             <button class="back" id="backButton"><<</button>
             <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn" data-url = "minGame.php">Bắt đầu chơi</button>
+            <button class="btn play-btn">Đầu hàng</button>
+        </div>
+
+        <!-- Thêm phần hiển thị thời gian và kết quả -->
+        <div class="game-info">
+            <div class="timer">
+                <span>Thời gian: </span>
+                <span id="gameTimer">00:00</span>
+            </div>
+            <div class="current-result">
+                <span>Kết quả: </span>
+                <span id="currentResult">Đang chơi...</span>
+            </div>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -53,27 +68,18 @@ if (!isset($_SESSION["user"])) {
             </div>
         </div>
 
-        <h2>Bảng kỷ lục</h2>
-        <div class="leaderboard">
-            <ul id="leaderboard-list"></ul>
-        </div>
-
-        <div class="info">
-            <div class="info-text">
-                <p>Trò chơi Dò Mìn, xuất hiện từ rất lâu trước khi phát minh ra máy tính, cũng là một trong những trò chơi trí não logic phổ biến nhất đối với người dùng Windows.</p>
-                <p>Phiên bản từ GAME I&R Online mang đến cơ hội chơi dò Mìn miễn phí trên cả PC và điện thoại. Hãy xem các quy tắc và hãy thực hành trong phần chơi một mình để tìm hiểu</p>
-                <p>Cách học cách chơi dò mìn cổ điển và vượt qua nó thành công, tránh được các ô có gài mìn.</p>
-                <p>Những con số trong trò Dò Mìn có nghĩa là gì, những ô nào nên được mở và tại sao nên đặt các lá cờ trên sân chơi.</p>
-            </div>
-            <div class="game-image">
-                <img src="../assets/img/6.jpg" alt="Min">
-            </div>
+        <!-- Game Board -->
+        <div class="game-container">
+            <h2>Cờ Caro - Gomoku Game</h2>
+            <div class="board" id="board"></div> <!-- Grid for the game -->
         </div>
     </main>
 
     <!-- Footer -->
-    <?php include "../includes/footer.php"?>
+<?
+include "../includes/footer.php"
+?>
 
+    <script src="../assets/js/pGame.js"></script>
 </body>
-    <script src="../assets/js/game.js"></script>
 </html>

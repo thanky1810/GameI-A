@@ -4,28 +4,40 @@ if (!isset($_SESSION["user"])) {
     http_response_code(404); 
     die("404 Not Found"); 
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/pGame.css">
 </head>
 <body>
-
     <!-- Header -->
-    <?php include "../includes/header.php"?>
-
+    <?php
+        include "../includes/header.php"
+    ?>
     <main>
         <h1>CỜ CARO <span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
             <button class="back" id="backButton"><<</button>
             <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn" data-url="caroGame.php">Bắt đầu chơi</button>
+            <button class="btn play-btn">Đầu hàng</button>
+        </div>
+
+        <!-- Thêm phần hiển thị thời gian và kết quả -->
+        <div class="game-info">
+            <div class="timer">
+                <span>Thời gian: </span>
+                <span id="gameTimer">00:00</span>
+            </div>
+            <div class="current-result">
+                <span>Kết quả: </span>
+                <span id="currentResult">Đang chơi...</span>
+            </div>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -48,29 +60,17 @@ if (!isset($_SESSION["user"])) {
             </div>
         </div>
 
-        <h2>Bảng kỷ lục</h2>
-        <div class="leaderboard">
-            <ul id="leaderboard-list"></ul>
-        </div>
-
-        <div class="info">
-            <div class="info-text">
-                <p>Chiến thắng trong trò chơi cờ caro trở nên khó khăn hơn nếu đó là trò chơi gomoku trên bàn cờ 15×15. Tuy nhiên, điều này khiến quá trình chơi trở nên thú vị hơn!</p>
-                <p>Trên GAME I&R Online, chơi trò chơi cờ caro với một người bạn hoàn toàn miễn phí chỉ sau một lần đăng ký đơn giản.</p>
-                <p>Học cách chơi Gomoku (học 5 quân một hàng) bạn sẽ đọc giúp đỡ bảng các quy tắc trên trang, video tổng quan ngắn và có hội đấu với máy tính (nó là một bậc thầy về cờ caro).</p>
-                <p>Hãy thực hành & đối mặt với người chơi, hãy phát triển các chiến lược và chiến thuật của mình, hãy tìm kiếm các đối thủ chuyên thắng — bảng xếp hạng này. Bạn sẽ giành được nhiều chiến thắng hơn trong các trò chơi với những đối thủ thực, kiếm được nhiều viên pha lê hơn, hãy thu thập nhiều kinh nghiệm và tiến lên đầu bảng xếp hạng cờ caro!</p>
-            </div>
-            <div class="game-image">
-                <img src="../assets/img/7.jpg" alt="Cờ Caro">
-            </div>
+        <!-- Game Board -->
+        <div class="game-container">
+            <h2>Cờ Caro - Gomoku Game</h2>
+            <div class="board" id="board"></div> <!-- Grid for the game -->
         </div>
     </main>
 
     <!-- Footer -->
-    <?php include "../includes/footer.php"?>
+    <?
+    include "../includes/footer.php"
+    ?>
+    <script src="../assets/js/pGame.js"></script>
 </body>
-<script src="../assets/js/game.js"></script>
 </html>
-
-
-

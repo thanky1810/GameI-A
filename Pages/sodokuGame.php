@@ -11,21 +11,33 @@ if (!isset($_SESSION["user"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/pGame.css">
 </head>
 <body>
-
     <!-- Header -->
-
-    <?php include "../includes/header.php"?>
+    <?php
+        include "../includes/header.php"
+    ?>
 
     <main>
-        <h1>SUDOKU<span class="stars">⭐⭐⭐⭐⭐</span></h1>
+        <h1>SUDOKU <span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
             <button class="back" id="backButton"><<</button>
             <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn" data-url = "sodokuGame.php">Bắt đầu chơi</button>
+            <button class="btn play-btn">Đầu hàng</button>
+        </div>
+
+        <!-- Thêm phần hiển thị thời gian và kết quả -->
+        <div class="game-info">
+            <div class="timer">
+                <span>Thời gian: </span>
+                <span id="gameTimer">00:00</span>
+            </div>
+            <div class="current-result">
+                <span>Kết quả: </span>
+                <span id="currentResult">Đang chơi...</span>
+            </div>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -55,28 +67,18 @@ if (!isset($_SESSION["user"])) {
             </div>
         </div>
 
-        <h2>Bảng kỷ lục</h2>
-        <div class="leaderboard">
-            <ul id="leaderboard-list"></ul>
-        </div>
-
-        <div class="info">
-            <div class="info-text">
-                <p>Sudoku là một trò chơi trí tuệ đầy thử thách, đặc biệt ở các cấp độ khó, nơi bạn cần phải suy luận chính xác để điền số vào từng ô trống. Chính sự logic và chiến lược trong từng bước đi khiến Sudoku trở thành một trò chơi hấp dẫn và cuốn hút!</p>
-                <p>Trên GAME I&R Online, bạn có thể trải nghiệm Sudoku hoàn toàn miễn phí chỉ với một lần đăng ký đơn giản. Học cách giải Sudoku thông qua các hướng dẫn chi tiết, video tổng quan, cũng như thực hành với nhiều cấp độ từ dễ đến khó, giúp bạn từng bước làm chủ trò chơi này.</p>
-                <p>Hãy thử sức trong chế độ một người chơi để rèn luyện tư duy logic, phát triển kỹ năng quan sát và tìm ra những chiến thuật giải đố hiệu quả nhất. Càng chơi nhiều, bạn sẽ càng nâng cao khả năng suy luận, tích lũy kinh nghiệm quý báu và chinh phục những thử thách khó hơn, tiến xa hơn trên bảng xếp hạng Sudoku!</p>
-            </div>
-            <div class="game-image">
-                <img src="../assets/img/8.jpg" alt="Min">
-            </div>
+        <!-- Game Board -->
+        <div class="game-container">
+            <h2>Cờ Caro - Gomoku Game</h2>
+            <div class="board" id="board"></div> <!-- Grid for the game -->
         </div>
     </main>
 
     <!-- Footer -->
+    <?
+    include "../includes/footer.php"    
+    ?>
 
-    <?php include "../includes/footer.php" ?>
-
-
+<script src="../assets/js/pGame.js"></script>
 </body>
-<script src="../assets/js/game.js"></script>
 </html>
