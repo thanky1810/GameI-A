@@ -55,7 +55,6 @@ if (!isset($_SESSION["user"])) {
     <?php include "../includes/footer.php"?>
 
 </body>
-<script src="../assets/js/account.js"></script>
 
 </html>
 
