@@ -1,6 +1,7 @@
 <?php
+  if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
+}
 ?>
 <link rel="stylesheet" href="../assets/css/header.css">
 <link rel="stylesheet" href="../assets/css/main.css">
