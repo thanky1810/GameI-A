@@ -21,18 +21,23 @@ if (!isset($_SESSION["user"])) {
 
     <main>
         <section id="account-info">
-            <div class="account-header">
-                <div class="avatar">
-                    <img src="../assets/img/5.jpg" alt="Avatar">
+        <?php
+            $userName = $_SESSION["user"];
+            echo '
+                <div class="account-header">
+                    <div class="avatar">
+                        <img src="../assets/img/5.jpg" alt="Avatar">
+                    </div>
+                    <div class="user-details">
+                        <h2 id="username"> ' .$userName. ' </h2>
+                        <p id="status">Trực tuyến</p>
+                    </div>
+                    <div class="back-home">
+                        <a href="../Pages/home.php" class="back-btn">Home</a>
+                    </div>
                 </div>
-                <div class="user-details">
-                    <h2 id="username">GUEST0232</h2>
-                    <p id="status">Trực tuyến</p>
-                </div>
-                <div class="back-home">
-                    <a href="../Pages/home.php" class="back-btn">Home</a>
-                </div>
-            </div>
+                ';               
+        ?>
             <div class="stats">
                 <h3>SỐ LIỆU THỐNG KÊ</h3>
                 <ul>
