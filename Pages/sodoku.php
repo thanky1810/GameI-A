@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION["user"])) {
+    http_response_code(404); 
+    die("404 Not Found"); 
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
