@@ -109,10 +109,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Form Đăng nhập -->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="login-form" method="post">
                     <div class="form-group">
-                        <input name="login-userName" type="text" id="login-username" placeholder="Username" required>
+                        <input name="login-userName" type="text" id="login-username" class="input-field" required>
+                        <label class="label" for="login-username">Username</label>
                     </div>
                     <div class="form-group">
-                        <input name="login-password" type="password" id="login-password" placeholder="Password" required>
+                        <input name="login-password" type="password" id="login-password" class="input-field" required>     
+                        <label class="label" for="login-password">Password</label>
                     </div>
                     <button name="login-submit" type="submit" class="btn">Log in</button>
                     <p>Don't have an account? <a href="#" id="switch-to-register">Signup</a></p>
@@ -121,13 +123,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Form Đăng ký -->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="register-form" style="display: none;" method="post">
                     <div class="form-group">
-                        <input name="register-userName" type="text" id="register-username" placeholder="Username" required>
+                        <input name="register-userName" type="text" id="register-username" class="input-field" required>
+                        <label class="label" for="register-userName">Username</label>
                     </div>
                     <div class="form-group">
-                        <input name="register-password" type="password" id="register-password" placeholder="Password" required>
+                        <input name="register-password" type="password" id="register-password" class="input-field" required>
+                        <label class="label" for="register-password">Password</label>
                     </div>
                     <div class="form-group">
-                        <input name="register-confirm-password" type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                        <input name="register-confirm-password" type="password" id="register-confirm-password"  class="input-field" required>
+                        <label class="label" for="register-confirm-password">Confirm Password</label>
                     </div>
                     <button name="register-submit" type="submit" class="btn">Sign up</button>
                     <p>Already have an account? <a href="#" id="switch-to-login">Log in</a></p>
