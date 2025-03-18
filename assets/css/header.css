@@ -65,6 +65,7 @@ span {
   border: 2px solid #66b6db;
   border-radius: 5px;
   background-color: #1e2633;
+  cursor: default;
 }
 .menu-toggle {
   font-size: 1.5rem;

@@ -1,6 +1,6 @@
 /////               THAM KHẢO
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Dữ liệu tài khoản giả lập, có thể thay bằng dữ liệu từ backend
     const userInfo = {
         username: 'GUEST0232',
@@ -12,11 +12,5 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Hiển thị thông tin người dùng lên trang
-    document.getElementById('username').textContent = userInfo.username;
-    document.getElementById('user-top-name').textContent = userInfo.username;
-    document.getElementById('wins').textContent = userInfo.wins;
-    document.getElementById('gamesPlayed').textContent = userInfo.gamesPlayed;
-    document.getElementById('matchesWon').textContent = userInfo.matchesWon;
-    document.getElementById('playTime').textContent = userInfo.playTime + ' giờ';
-    document.getElementById('registrationTime').textContent = userInfo.registrationTime;
+
 });
