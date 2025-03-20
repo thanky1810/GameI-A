@@ -14,6 +14,7 @@ if (!isset($_SESSION["user"])) {
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/pGame.css">
+    <link rel="stylesheet" href="../assets/css/caro.css">
 </head>
 <body>
     <!-- Header -->
