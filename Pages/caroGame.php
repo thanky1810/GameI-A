@@ -63,7 +63,8 @@ if (!isset($_SESSION["user"])) {
         <!-- Game Board -->
         <div class="game-container">
             <h2>Cờ Caro - Gomoku Game</h2>
-            <div class="board" id="board"></div> <!-- Grid for the game -->
+            <table id="table_game">
+            </table>
         </div>
     </main>
 
@@ -71,6 +72,8 @@ if (!isset($_SESSION["user"])) {
     <?
     include "../includes/footer.php"
     ?>
-    <script src="../assets/js/pGame.js"></script>
+    <!-- <script src="../assets/js/pGame.js"></script> -->
+    <script type="text/javascript" src="../assets/js/caro-main.js"></script>
+<script type="text/javascript" src="../assets/js/contants.js"></script>
 </body>
 </html>

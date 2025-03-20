@@ -10,6 +10,8 @@
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/Home.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/caro.css">
+
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
@@ -67,6 +69,19 @@
             </p>
         </section>
     </main>
+    <div>
+        <div class="options">
+            <label for="list-type-play"></label><select id="list-type-play" class="hide-option option">
+                <option selected="selected" disabled="disabled" value="">Select type play</option>
+                <option value="2-players">2 players</option>
+                <option value="player-computer">Player and computer</option>
+                <option value="computer-computer">Computer and computer</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="button" id="button" onclick="handleLetGo()">Let's go!</div>
 
     <?php include '../includes/footer.php'?>
 </body>
