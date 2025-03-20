@@ -73,7 +73,7 @@ if (!isset($_SESSION["user"])) {
     <?
     include "../includes/footer.php"
     ?>
-    <!-- <script src="../assets/js/pGame.js"></script> -->
+    <script src="../assets/js/pGame.js"></script>
     <script type="text/javascript" src="../assets/js/caro-main.js"></script>
 <script type="text/javascript" src="../assets/js/contants.js"></script>
 </body>
