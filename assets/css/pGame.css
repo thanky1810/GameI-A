@@ -189,3 +189,40 @@ footer {
 .copyright {
   text-align: right;
 }
+/* Style for the table cells */
+.td_game {
+  width: 40px; /* Fixed width for each cell */
+  height: 40px; /* Fixed height for each cell */
+  padding: 0; /* Remove padding to ensure the div takes full space */
+  text-align: center; /* Center the content */
+  vertical-align: middle; /* Center vertically */
+}
+
+/* Style for the div inside each cell */
+.td_game .fixed {
+  width: 100%; /* Take full width of the td */
+  height: 100%; /* Take full height of the td */
+  display: flex; /* Use flexbox to center content */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  background-color: #ccc; /* Default background for unrevealed cells */
+  cursor: pointer; /* Indicate the cell is clickable */
+}
+
+/* Style for opened cells */
+.td_game .opened {
+  background-color: #fff; /* White background for opened cells */
+}
+
+/* Style for cells with mines */
+.td_game .mine {
+  background-color: #ff4d4d; /* Red background for mines */
+  font-size: 20px; /* Adjust the font size of the bomb icon */
+  line-height: 40px; /* Match the height of the cell to center vertically */
+}
+
+/* Style for numbers in cells */
+.td_game .fixed:not(.mine) {
+  font-size: 16px; /* Font size for numbers */
+  color: #333; /* Color for numbers */
+}
