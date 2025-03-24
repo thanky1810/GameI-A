@@ -44,6 +44,10 @@ body {
   font-size: 1.1rem;
   border-radius: 5px;
   cursor: pointer;
+
+  font-weight: bolder;
+  background-color: #319756;
+  color: rgb(0, 0, 0);
 }
 
 .rule-btn {
@@ -51,12 +55,6 @@ body {
   background-color: #3a4d66;
   color: var(--white);
   margin-right: 10px;
-}
-
-.play-btn {
-  font-weight: bolder;
-  background-color: #319756;
-  color: rgb(0, 0, 0);
 }
 
 /* Bảng Quy tắc */

@@ -3,8 +3,19 @@ let player;
 let matrixGame;
 let typeGame;
 
+function getTypeFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get("type");
+
+    if (type === TWO_PLAYER || type === COMPUTER || type === COMPUTER_COMPUTER) {
+        return type;
+    }
+
+    return TWO_PLAYER; // mặc định
+}
+
 function init() {
-    player = X; // Người chơi đầu tiên là X
+    player = X;
     matrixGame = [];
     typeGame = getTypeFromURL();
 
