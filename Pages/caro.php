@@ -29,7 +29,7 @@ if (!isset($_SESSION["user"])) {
             <button class="back" id="backButton">
                 << </button>
                     <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-                    <button class="btn play-btn" id="openModeModal">Bắt đầu chơi</button>
+                    <button class="btn " id="openModeModal">Bắt đầu chơi</button>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -86,6 +86,7 @@ if (!isset($_SESSION["user"])) {
     <!-- Footer -->
     <?php include "../includes/footer.php" ?>
 </body>
+<script src="../assets/js/contants.js"></script>
 <script src="../assets/js/game.js"></script>
 <script src="../assets/js/roleTable.js"></script>
 
