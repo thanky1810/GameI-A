@@ -30,7 +30,7 @@ if (!isset($_SESSION["user"])) {
         </div>
 
         <!-- Thêm phần hiển thị thời gian và kết quả -->
-        <div class="game-info">
+        <div class="game-info"> 
             <div class="timer">
                 <span>Thời gian: </span>
                 <span id="gameTimer">00:00</span>

@@ -6,7 +6,7 @@ let typeGame;
 function init() {
     player = X; // Người chơi đầu tiên là X
     matrixGame = [];
-    typeGame = TWO_PLAYER; // Mặc định là chế độ hai người chơi
+    typeGame = getTypeFromURL();
 
     // Khởi tạo bàn cờ 10x10
     let rows = 10;

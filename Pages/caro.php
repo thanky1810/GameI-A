@@ -1,31 +1,35 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) {
-    http_response_code(404); 
-    die("404 Not Found"); 
+    http_response_code(404);
+    die("404 Not Found");
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="stylesheet" href="../assets/css/roleTable.css">
 </head>
+
 <body>
 
     <!-- Header -->
-    <?php include "../includes/header.php"?>
+    <?php include "../includes/header.php" ?>
 
     <main>
         <h1>CỜ CARO <span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
-            <button class="back" id="backButton"><<</button>
-            <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn" data-url="caroGame.php">Bắt đầu chơi</button>
+            <button class="back" id="backButton">
+                << </button>
+                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
+                    <button class="btn play-btn" id="openModeModal">Bắt đầu chơi</button>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -53,6 +57,19 @@ if (!isset($_SESSION["user"])) {
             <ul id="leaderboard-list"></ul>
         </div>
 
+        <!-- Modal chọn chế độ chơi -->
+        <div class="overlay" id="modeModal" style="display: none;">
+            <div class="modal">
+                <h2>Chọn chế độ chơi</h2>
+                <div class="game-mode">
+                    <button id="btn-2-players" class="active">2 người chơi</button>
+                    <button id="btn-vs-computer">Đấu với máy</button>
+                </div>
+                <button id="startGameBtn" class="start-btn">Bắt đầu</button>
+            </div>
+        </div>
+
+
         <div class="info">
             <div class="info-text">
                 <p>Chiến thắng trong trò chơi cờ caro trở nên khó khăn hơn nếu đó là trò chơi gomoku trên bàn cờ 15×15. Tuy nhiên, điều này khiến quá trình chơi trở nên thú vị hơn!</p>
@@ -67,10 +84,9 @@ if (!isset($_SESSION["user"])) {
     </main>
 
     <!-- Footer -->
-    <?php include "../includes/footer.php"?>
+    <?php include "../includes/footer.php" ?>
 </body>
 <script src="../assets/js/game.js"></script>
+<script src="../assets/js/roleTable.js"></script>
+
 </html>
-
-
-
