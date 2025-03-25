@@ -2,6 +2,7 @@
 let player;
 let matrixGame;
 let typeGame;
+let gameOver = false;
 
 function getTypeFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -70,7 +71,7 @@ function getHorizontal(x, y, player) {
     }
 
     for (let i = 1; i < 5; i++) {
-        if (y - i >= 0 && y - i < matrixGame[0].length && matrixGame[x][y - i] === player) {
+        if (y - i >= 0 && matrixGame[x][y - i] === player) {
             count++;
         } else {
             break;
@@ -91,7 +92,7 @@ function getVertical(x, y, player) {
     }
 
     for (let i = 1; i < 5; i++) {
-        if (x - i >= 0 && x - i < matrixGame.length && matrixGame[x - i][y] === player) {
+        if (x - i >= 0 && matrixGame[x - i][y] === player) {
             count++;
         } else {
             break;
@@ -100,6 +101,7 @@ function getVertical(x, y, player) {
 
     return count;
 }
+
 
 function getRightDiagonal(x, y, player) {
     let count = 1;
@@ -155,58 +157,63 @@ function handleClick(id) {
         case WIN:
             setTimeout(function () {
                 alert("Player: " + player + " is winner");
-
-                // reset game
                 init();
             }, 100);
             break;
         case DRAW:
             setTimeout(function () {
                 alert("Draw");
-
-                // reset game
                 init();
             }, 100);
             break;
     }
 }
 
+
 function processClick(id) {
+    if (gameOver) return;
+
     let points = id.split("-");
+    let x = Number(points[0]);
+    let y = Number(points[1]);
 
-    switch (typeGame) {
-        case TWO_PLAYER:
-            if (matrixGame[Number(points[0])][Number(points[1])] === X || matrixGame[Number(points[0])][Number(points[1])] === O) {
-                return;
-            }
-
-            if (player === X) {
-                matrixGame[Number(points[0])][Number(points[1])] = O;
-                const cell = document.getElementById(id);
-                cell.innerHTML = OText;
-                cell.classList.add("o");
-
-            }
-
-            if (player === O) {
-                matrixGame[Number(points[0])][Number(points[1])] = X;
-                const cell = document.getElementById(id);
-                cell.innerHTML = XText;
-                cell.classList.add("x");
-            }
-
-            if (checkWin(points)) {
-                return WIN;
-            }
-
-            // check draw
-            if (checkDraw()) {
-                return DRAW;
-            }
-
-            player = player === X ? O : X;
-            break;
-        case COMPUTER:
-        // source code to process play with computer
+    if (matrixGame[x][y] !== EMPTY) {
+        return;
     }
+
+    if (player === X) {
+        matrixGame[x][y] = X;
+        const cell = document.getElementById(id);
+        cell.innerHTML = XText;
+        cell.classList.add("x");
+    } else {
+        matrixGame[x][y] = O;
+        const cell = document.getElementById(id);
+        cell.innerHTML = OText;
+        cell.classList.add("o");
+    }
+
+
+    if (checkWin([x, y])) {
+        gameOver = true;
+        setTimeout(function () {
+            alert("Player: " + player + " is winner");
+            init();
+            gameOver = false;
+        }, 100);
+        return WIN;
+    }
+
+
+    if (checkDraw()) {
+        gameOver = true;
+        setTimeout(function () {
+            alert("Draw");
+            init();
+            gameOver = false;
+        }, 100);
+        return DRAW;
+    }
+
+    player = (player === X) ? O : X;
 }
