@@ -181,13 +181,18 @@ function processClick(id) {
             }
 
             if (player === X) {
-                matrixGame[Number(points[0])][Number(points[1])] = X;
-                document.getElementById(id).innerHTML = XText;
+                matrixGame[Number(points[0])][Number(points[1])] = O;
+                const cell = document.getElementById(id);
+                cell.innerHTML = OText;
+                cell.classList.add("o");
+
             }
 
             if (player === O) {
-                matrixGame[Number(points[0])][Number(points[1])] = O;
-                document.getElementById(id).innerHTML = OText;
+                matrixGame[Number(points[0])][Number(points[1])] = X;
+                const cell = document.getElementById(id);
+                cell.innerHTML = XText;
+                cell.classList.add("x");
             }
 
             if (checkWin(points)) {

@@ -66,14 +66,12 @@ table {
 .x {
   color: darksalmon;
   position: relative;
-  top: -8px;
   font-size: 0.9em !important;
   cursor: default;
 }
 .o {
   color: aquamarine;
   position: relative;
-  top: -7px;
   font-size: 0.8em !important;
   cursor: default;
 }
