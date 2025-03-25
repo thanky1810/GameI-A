@@ -1,4 +1,6 @@
 h1 {
+  color: white;
+
   line-height: 1em;
   margin-bottom: 0;
   padding-bottom: 5px;
@@ -6,6 +8,7 @@ h1 {
   font-weight: bold;
 }
 h2 {
+  color: white;
   font-size: 1.3em;
   font-weight: bold;
   padding: 0;
