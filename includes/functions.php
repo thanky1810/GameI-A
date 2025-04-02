@@ -1,8 +1,12 @@
 <?php
-function logining($redirectPage) {
+function logining($redirectPage)
+{
     if (!isset($_SESSION["user"])) {
-        return "../Pages/login.php";
+        $path = $_SERVER['DOCUMENT_ROOT'] . '/Project/Pages/login.php';
+        if (!file_exists($path)) {
+            die("File not found: " . $path); // Hiển thị đường dẫn thực tế
+        }
+        return $path;
     }
     return $redirectPage;
 }
-?>
