@@ -1,8 +1,9 @@
 <?php
-    require_once '../includes/functions.php';
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Project/includes/functions.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,10 @@
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/Home.css">
     <link rel="stylesheet" href="../assets/css/main.css">
-<link rel="stylesheet" href="../assets/css/caro.css">
+    <link rel="stylesheet" href="../assets/css/caro.css">
 
 </head>
+
 <body>
     <?php include '../includes/header.php'; ?>
 
@@ -63,12 +65,13 @@
             <h2>GAME I&R Online – Trang web trò chơi cổ điển hiện đại</h2>
             <p>GAME I&R Online là một cổng trò chơi thế hệ mới, nơi mà tất cả những trò chơi phổ biến và quen thuộc nhất với nhiều người được kết hợp trong một không gian chơi game độc đáo.</p>
             <p>
-                Sau khi đăng ký đơn giản, mỗi người tham gia có quyền truy cập vào nhiều trò chơi trực tuyến cổ điển thuộc nhiều 
-                thể loại và cấp bậc khác nhau với chất lượng tuyệt tốt, phù hợp với mọi thiết bị mà khôgn cần tải xuống và cài đặt. 
+                Sau khi đăng ký đơn giản, mỗi người tham gia có quyền truy cập vào nhiều trò chơi trực tuyến cổ điển thuộc nhiều
+                thể loại và cấp bậc khác nhau với chất lượng tuyệt tốt, phù hợp với mọi thiết bị mà khôgn cần tải xuống và cài đặt.
                 Sự tiến bộ của bnaj trong trò chơi sẽ được phản ánh trên thứ hạng của bạn.
             </p>
         </section>
     </main>
-    <?php include '../includes/footer.php'?>
+    <?php include '../includes/footer.php' ?>
 </body>
+
 </html>
