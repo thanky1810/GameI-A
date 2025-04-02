@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdownMenu = document.getElementById("dropdownMenu");
 
     menuToggle.addEventListener("click", function (event) {
-        event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền lên
+        event.stopPropagation();
         dropdownMenu.classList.toggle("show");
     });
 

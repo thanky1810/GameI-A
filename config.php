@@ -1,27 +1,39 @@
 <?php
-function loadEnv($filePath) {
+function loadEnv($filePath)
+{
     if (!file_exists($filePath)) {
-        return;
+        throw new RuntimeException(".env file not found: {$filePath}");
     }
 
     $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    
+
     foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) {
-            continue; // Bỏ qua dòng comment
+        $line = trim($line);
+
+        // Bỏ qua comment và dòng trống
+        if (empty($line) || strpos($line, '#') === 0) {
+            continue;
         }
 
-        list($key, $value) = explode('=', $line, 2);
-        $key = trim($key);
-        $value = trim($value);
+        // Xử lý giá trị có dấu = trong value
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
 
-        if (preg_match('/^"(.*)"$/', $value, $matches) || preg_match("/^'(.*)'$/", $value, $matches)) {
-            $value = $matches[1];
+            // Xử lý quoted values ("" hoặc '')
+            if (preg_match('/^"(.*)"$/s', $value, $matches) || preg_match("/^'(.*)'$/s", $value, $matches)) {
+                $value = $matches[1];
+            }
+
+            // Xử lý biến môi trường lồng nhau (ví dụ: ${DB_HOST})
+            $value = preg_replace_callback('/\${([a-zA-Z0-9_]+)}/', function ($match) {
+                return getenv($match[1]) ?: $match[0];
+            }, $value);
+
+            putenv("$key=$value");
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
         }
-
-        putenv("$key=$value");
-        $_ENV[$key] = $value;
-        $_SERVER[$key] = $value;
     }
 }
-?>
