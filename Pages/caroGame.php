@@ -1,13 +1,15 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) {
-    http_response_code(404); 
-    die("404 Not Found"); 
+    http_response_code(404);
+    die("404 Not Found");
 }
-
+require_once(__DIR__ . '/../includes/functions.php');
+require_once(__DIR__ . '/../bootstrap.php');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,21 +18,23 @@ if (!isset($_SESSION["user"])) {
     <link rel="stylesheet" href="../assets/css/pGame.css">
     <link rel="stylesheet" href="../assets/css/caro.css">
 </head>
+
 <body>
     <!-- Header -->
     <?php
-        include "../includes/header.php"
+    include "../includes/header.php"
     ?>
     <main>
         <h1>CỜ CARO <span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
-            <button class="back" id="backButton"><<</button>
-            <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn">Đầu hàng</button>
+            <button class="back" id="backButton">
+                <<< /button>
+                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
+                    <button class="btn play-btn">Đầu hàng</button>
         </div>
 
         <!-- Thêm phần hiển thị thời gian và kết quả -->
-        <div class="game-info"> 
+        <div class="game-info">
             <div class="timer">
                 <span>Thời gian: </span>
                 <span id="gameTimer">00:00</span>
@@ -75,6 +79,7 @@ if (!isset($_SESSION["user"])) {
     ?>
     <script src="../assets/js/pGame.js"></script>
     <script type="text/javascript" src="../assets/js/caro-main.js"></script>
-<script type="text/javascript" src="../assets/js/contants.js"></script>
+    <script type="text/javascript" src="../assets/js/contants.js"></script>
 </body>
+
 </html>

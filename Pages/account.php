@@ -1,12 +1,15 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) {
-    http_response_code(404); 
-    die("404 Not Found"); 
+    http_response_code(404);
+    die("404 Not Found");
 }
+require_once(__DIR__ . '/../includes/functions.php');
+require_once(__DIR__ . '/../bootstrap.php');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,14 +17,15 @@ if (!isset($_SESSION["user"])) {
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/account.css">
 </head>
+
 <body>
 
     <!-- Header -->
-    <?php include "../includes/header.php"?>
+    <?php include __DIR__ . '/../includes/header.php'; ?>
 
     <main>
         <section id="account-info">
-        <?php
+            <?php
             $userName = $_SESSION["user"];
             echo '
                 <div class="account-header">
@@ -29,15 +33,15 @@ if (!isset($_SESSION["user"])) {
                         <img src="../assets/img/5.jpg" alt="Avatar">
                     </div>
                     <div class="user-details">
-                        <h2 id="username"> ' .$userName. ' </h2>
+                        <h2 id="username"> ' . $userName . ' </h2>
                         <p id="status">Trực tuyến</p>
                     </div>
                     <div class="back-home">
                         <a href="../Pages/home.php" class="back-btn">Home</a>
                     </div>
                 </div>
-                ';               
-        ?>
+                ';
+            ?>
             <div class="stats">
                 <h3>SỐ LIỆU THỐNG KÊ</h3>
                 <ul>
@@ -50,11 +54,10 @@ if (!isset($_SESSION["user"])) {
             </div>
         </section>
     </main>
-    
+
     <!-- Footer -->
-    <?php include "../includes/footer.php"?>
+    <?php include "../includes/footer.php" ?>
 
 </body>
 
 </html>
-
