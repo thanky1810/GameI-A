@@ -1,12 +1,15 @@
 <?php
 session_start();
 if (!isset($_SESSION["user"])) {
-    http_response_code(404); 
-    die("404 Not Found"); 
+    http_response_code(404);
+    die("404 Not Found");
 }
+require_once(__DIR__ . '/../includes/functions.php');
+require_once(__DIR__ . '/../bootstrap.php');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +17,20 @@ if (!isset($_SESSION["user"])) {
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/game.css">
 </head>
+
 <body>
 
     <!-- Header -->
 
-    <?php include "../includes/header.php"?>
+    <?php include "../includes/header.php" ?>
 
     <main>
         <h1>SUDOKU<span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
-            <button class="back" id="backButton"><<</button>
-            <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-            <button class="btn play-btn" data-url = "sodokuGame.php">Bắt đầu chơi</button>
+            <button class="back" id="backButton">
+                <<< /button>
+                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
+                    <button class="btn play-btn" data-url="sodokuGame.php">Bắt đầu chơi</button>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -79,4 +84,5 @@ if (!isset($_SESSION["user"])) {
 
 </body>
 <script src="../assets/js/game.js"></script>
+
 </html>
