@@ -1,43 +1,142 @@
 <?php
 
 /**
- * File functions.php - Các hàm tiện ích cho ứng dụng
+ * Xác định đường dẫn cơ sở của dự án
  */
-
-// Hàm kiểm tra đăng nhập và điều hướng URL
-function logining($url)
+function getProjectBasePath()
 {
-    // Nếu chưa đăng nhập và không phải trang đăng nhập, chuyển hướng đến trang đăng nhập
-    if (!isset($_SESSION['user_id']) && strpos($url, 'login.php') === false) {
-        return getCorrectUrl('Pages/login.php') . '?redirect=' . urlencode($url);
+    // Lấy từ biến môi trường nếu đã thiết lập
+    $baseUrl = getenv('BASE_URL');
+    if (!empty($baseUrl)) {
+        return rtrim($baseUrl, '/');
     }
 
-    return $url;
-}
+    // Xác định tự động dựa trên cấu trúc server
+    $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\');
+    $scriptName = $_SERVER['SCRIPT_NAME'];
 
-// Hàm xác định đường dẫn dựa vào môi trường
-function getCorrectUrl($path)
-{
-    // Loại bỏ dấu / ở đầu và cuối nếu có
-    $path = trim($path, '/');
-
-    // Xác định môi trường từ biến APP_ENV
-    $isLocal = (defined('APP_ENV') && APP_ENV === 'local');
-
-    if ($isLocal) {
-        // Trong môi trường local, sử dụng đường dẫn tương đối
-        return '../' . $path;
+    // Check if the project name is already in DOCUMENT_ROOT
+    if (strpos($docRoot, 'Project') !== false) {
+        // Local environment - Project is part of DOCUMENT_ROOT
+        return '';  // Empty base path for relative URLs
     } else {
-        // Trong môi trường server, sử dụng đường dẫn tuyệt đối
-        return '/Project/' . $path;
+        // Server environment - Project is a subfolder
+        if (strpos($scriptName, '/Project/') !== false) {
+            return '/Project';
+        }
+
+        // Try to detect project folder from script path
+        $scriptParts = explode('/', $scriptName);
+        if (count($scriptParts) > 1) {
+            return '/' . $scriptParts[1];  // Return the first directory in path
+        }
+
+        return '';  // Default empty if we can't determine
     }
 }
 
-// Hàm tạo đường dẫn tới tài nguyên tĩnh (assets)
+/**
+ * Xác định độ sâu của đường dẫn hiện tại
+ */
+function getCurrentPathDepth()
+{
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    $parts = explode('/', trim($scriptName, '/'));
+
+    // Nếu DOCUMENT_ROOT đã chứa Project (môi trường local)
+    if (strpos($_SERVER['DOCUMENT_ROOT'], 'Project') !== false) {
+        return count($parts);
+    } else {
+        // Bỏ qua phần tử đầu tiên (tên dự án) trong môi trường server
+        return count($parts) - 1;
+    }
+}
+
+/**
+ * Tạo đường dẫn tương đối đến thư mục gốc dự án
+ */
+function getRelativePathToRoot()
+{
+    $depth = getCurrentPathDepth();
+    if ($depth <= 1) {
+        return './';
+    }
+
+    return str_repeat('../', $depth - 1);
+}
+
+/**
+ * Tạo đường dẫn tài nguyên
+ */
 function asset($path)
 {
-    // Loại bỏ dấu / ở đầu nếu có
+    // Loại bỏ dấu / ở đầu path nếu có
     $path = ltrim($path, '/');
 
-    return getCorrectUrl($path);
+    $basePath = getProjectBasePath();
+    if (!empty($basePath)) {
+        // Sử dụng đường dẫn tuyệt đối cho server
+        return "{$basePath}/assets/{$path}";
+    } else {
+        // Sử dụng đường dẫn tương đối cho local
+        $relativePath = getRelativePathToRoot();
+        return "{$relativePath}assets/{$path}";
+    }
 }
+
+/**
+ * Tạo URL chính xác cho các trang
+ */
+function getCorrectUrl($path)
+{
+    // Loại bỏ dấu / ở đầu path nếu có
+    $path = ltrim($path, '/');
+
+    $basePath = getProjectBasePath();
+    if (!empty($basePath)) {
+        // Sử dụng đường dẫn tuyệt đối cho server
+        return "{$basePath}/{$path}";
+    } else {
+        // Sử dụng đường dẫn tương đối cho local
+        $relativePath = getRelativePathToRoot();
+        return "{$relativePath}{$path}";
+    }
+}
+
+/**
+ * Kiểm tra trạng thái đăng nhập và chuyển hướng
+ */
+function logining($url)
+{
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+        return $url;
+    } else {
+        // Tạo URL trang đăng nhập
+        $loginPath = getCorrectUrl('Pages/login.php');
+        return $loginPath . '?redirect=' . urlencode($url);
+    }
+}
+
+/**
+ * Hàm debug hiển thị thông tin đường dẫn
+ */
+// function debugPaths()
+// {
+//     echo "<div style='background:#f8f9fa;padding:10px;margin:10px;border-radius:5px;'>";
+//     echo "<h3>Debug Path Information</h3>";
+//     echo "<pre>";
+//     echo "PROJECT_BASE_PATH: " . getProjectBasePath() . "\n";
+//     echo "CURRENT_PATH_DEPTH: " . getCurrentPathDepth() . "\n";
+//     echo "RELATIVE_PATH_TO_ROOT: " . getRelativePathToRoot() . "\n";
+//     echo "SERVER_NAME: " . ($_SERVER['SERVER_NAME'] ?? 'not set') . "\n";
+//     echo "SERVER_ADDR: " . ($_SERVER['SERVER_ADDR'] ?? 'not set') . "\n";
+//     echo "APP_ENV: " . getenv('APP_ENV') . "\n";
+//     echo "BASE_URL from .env: " . getenv('BASE_URL') . "\n";
+//     echo "SCRIPT_NAME: " . $_SERVER['SCRIPT_NAME'] . "\n";
+//     echo "REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "\n";
+//     echo "DOCUMENT_ROOT: " . $_SERVER['DOCUMENT_ROOT'] . "\n";
+//     echo "Example asset path: " . asset('css/main.css') . "\n";
+//     echo "Example URL path: " . getCorrectUrl('Pages/caro.php') . "\n";
+//     echo "</pre>";
+//     echo "</div>";
+// }

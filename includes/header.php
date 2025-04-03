@@ -3,12 +3,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-<link rel="stylesheet" href="/Project/assets/css/header.css">
-<link rel="stylesheet" href="/Project/assets/css/main.css">
+<link rel="stylesheet" href="<?= asset('css/caro.css') ?>">
+<link rel="stylesheet" href="<?= asset('css/header.css') ?>">
+<link rel="stylesheet" href="<?= asset('css/main.css') ?>">
 <header>
     <a href="/Project/Pages/home.php">
         <div class="logo">
-            <img src="/Project/assets/img/10.jpg" alt="GAME I&R Online">
+            <img src="<?= asset('img/10.jpg') ?>" alt="GAME I&R Online">
             <span>GAME I&R Online</span>
         </div>
     </a>
@@ -39,5 +40,5 @@ if (session_status() === PHP_SESSION_NONE) {
         }
         ?>
     </div>
-    <script src="/Project/assets/js/header.js"></script>
+    <script src="<?= asset('js/header.js') ?>"></script>
 </header>
