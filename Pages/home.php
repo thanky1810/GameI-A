@@ -9,10 +9,10 @@ require_once(__DIR__ . '/../bootstrap.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Portal - I&R Online</title>
-    <link rel="shortcut icon" href="<?= asset('assets/img/10.jpg') ?>" type="image/x-icon">
-    <link rel="stylesheet" href="<?= asset('assets/css/Home.css') ?>">
-    <link rel="stylesheet" href="<?= asset('assets/css/main.css') ?>">
-    <link rel="stylesheet" href="<?= asset('assets/css/caro.css') ?>">
+    <link rel="shortcut icon" href="<?= asset('img/10.jpg') ?>" type="image/x-icon">
+    <link rel="stylesheet" href="<?= asset('css/home.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/main.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/caro.css') ?>">
 </head>
 
 <body>
@@ -28,7 +28,7 @@ require_once(__DIR__ . '/../bootstrap.php');
                     <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/caro.php'))) ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-caro">35</span> người chơi</p>
-                            <button class="play-button">🎮 Chơi Caro</button>
+                            <buttosn class="play-button">🎮 Chơi Caro</buttosn>
                         </div>
                     </a>
                 </div>
@@ -74,7 +74,7 @@ require_once(__DIR__ . '/../bootstrap.php');
     </main>
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
-
+    <!-- 
     <script>
         // JavaScript để xử lý lượt người chơi (nếu cần)
         document.querySelectorAll('.game-item').forEach(item => {
@@ -83,7 +83,7 @@ require_once(__DIR__ . '/../bootstrap.php');
                 console.log(`Đã chọn game: ${gameId}`);
             });
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

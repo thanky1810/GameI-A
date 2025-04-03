@@ -40,13 +40,19 @@ define('APP_ENV', getenv('APP_ENV') ?? 'local');
 // Tự động xác định nếu đang chạy trên localhost
 if (!defined('IS_LOCAL')) {
     $server_name = $_SERVER['SERVER_NAME'] ?? '';
+    $server_addr = $_SERVER['SERVER_ADDR'] ?? '';
+
     define(
         'IS_LOCAL',
         APP_ENV === 'local' ||
             $server_name === 'localhost' ||
             $server_name === '192.168.1.10' ||
-            strpos($server_name, '192.168.') === 0
+            strpos($server_name, '192.168.') === 0 ||
+            strpos($server_addr, '192.168.') === 0
     );
+
+    // Debug: Hiển thị thông tin server để kiểm tra
+    // echo "SERVER_NAME: $server_name, SERVER_ADDR: $server_addr, IS_LOCAL: ".(IS_LOCAL?'true':'false');
 }
 
 // Khởi động session nếu chưa
