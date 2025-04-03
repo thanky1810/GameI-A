@@ -1,8 +1,4 @@
 <?php
-
-/**
- * Xác định đường dẫn cơ sở của dự án
- */
 function getProjectBasePath()
 {
     // Lấy từ biến môi trường nếu đã thiết lập
@@ -35,9 +31,7 @@ function getProjectBasePath()
     }
 }
 
-/**
- * Xác định độ sâu của đường dẫn hiện tại
- */
+
 function getCurrentPathDepth()
 {
     $scriptName = $_SERVER['SCRIPT_NAME'];
@@ -52,9 +46,7 @@ function getCurrentPathDepth()
     }
 }
 
-/**
- * Tạo đường dẫn tương đối đến thư mục gốc dự án
- */
+
 function getRelativePathToRoot()
 {
     $depth = getCurrentPathDepth();
@@ -65,9 +57,6 @@ function getRelativePathToRoot()
     return str_repeat('../', $depth - 1);
 }
 
-/**
- * Tạo đường dẫn tài nguyên
- */
 function asset($path)
 {
     // Loại bỏ dấu / ở đầu path nếu có
@@ -84,9 +73,7 @@ function asset($path)
     }
 }
 
-/**
- * Tạo URL chính xác cho các trang
- */
+
 function getCorrectUrl($path)
 {
     // Loại bỏ dấu / ở đầu path nếu có
@@ -103,18 +90,12 @@ function getCorrectUrl($path)
     }
 }
 
-/**
- * Kiểm tra trạng thái đăng nhập và chuyển hướng
- */
-function logining($url)
+function logining($redirectPage)
 {
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-        return $url;
-    } else {
-        // Tạo URL trang đăng nhập
-        $loginPath = getCorrectUrl('Pages/login.php');
-        return $loginPath . '?redirect=' . urlencode($url);
+    if (!isset($_SESSION["user"])) {
+        return getCorrectUrl('Pages/login.php');
     }
+    return $redirectPage;
 }
 
 /**

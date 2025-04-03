@@ -24,33 +24,33 @@ require_once(__DIR__ . '/../bootstrap.php');
             <div class="game-list">
                 <!-- Game Caro -->
                 <div class="game-item" data-id="caro">
-                    <img src="<?= asset('assets/img/12.jpg') ?>" alt="Caro">
-                    <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/caro.php'))) ?>">
+                    <img src="<?= asset('img/12.jpg') ?>" alt="Caro">
+                    <a href="<?= logining(getCorrectUrl('Pages/caro.php')) ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-caro">35</span> người chơi</p>
-                            <buttosn class="play-button">🎮 Chơi Caro</buttosn>
+                            <button class="play-button">🎮 Chơi Game</button>
                         </div>
                     </a>
                 </div>
 
                 <!-- Game Sudoku -->
                 <div class="game-item" data-id="sudoku">
-                    <img src="<?= asset('assets/img/13.jpg') ?>" alt="Sudoku">
+                    <img src="<?= asset('img/13.jpg') ?>" alt="Sudoku">
                     <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/sodoku.php'))) ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-sudoku">25</span> người chơi</p>
-                            <button class="play-button">🎮 Chơi Sudoku</button>
+                            <button class="play-button">🎮 Chơi Game</button>
                         </div>
                     </a>
                 </div>
 
                 <!-- Game Minesweeper -->
                 <div class="game-item" data-id="minesweeper">
-                    <img src="<?= asset('assets/img/11.jpg') ?>" alt="Minesweeper">
+                    <img src="<?= asset('img/11.jpg') ?>" alt="Minesweeper">
                     <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/min.php'))) ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-minesweeper">19</span> người chơi</p>
-                            <button class="play-button">🎮 Dò Mìn</button>
+                            <button class="play-button">🎮 Chơi Game</button>
                         </div>
                     </a>
                 </div>
@@ -61,8 +61,7 @@ require_once(__DIR__ . '/../bootstrap.php');
             <h2>Game Mới</h2>
             <div class="game-item">
                 <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/min.php'))) ?>">
-                    <img src="<?= asset('assets/img/11.jpg') ?>" alt="Minesweeper">
-                    <div class="new-badge">MỚI</div>
+                    <img src="<?= asset('img/11.jpg') ?>" alt="Minesweeper">
                 </a>
             </div>
         </section>
