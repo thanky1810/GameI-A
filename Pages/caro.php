@@ -31,7 +31,7 @@ require_once(__DIR__ . '/../bootstrap.php');
             <button class="back" id="backButton">
                 << </button>
                     <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-                    <button class="btn " id="openModeModal">Bắt đầu chơi</button>
+                    <button class="btn" id="openModeModal">Bắt đầu chơi</button>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
