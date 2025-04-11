@@ -9,3 +9,7 @@ const DRAW = "DRAW";
 const XText = "X";
 const OText = "O";
 const EMPTY = "";
+
+// Các trạng thái game
+const ACTIVE = 'active';  // Game đang chạy
+const ENDED = 'ended';    // Game kết thúc

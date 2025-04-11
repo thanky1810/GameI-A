@@ -15,9 +15,9 @@ require_once(__DIR__ . '/../bootstrap.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
-    <link rel="stylesheet" href="../assets/css/roleTable.css">
+    <link rel="stylesheet" href="<?= asset('css/game.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/roleTable.css') ?>">
+    <link rel="shortcut icon" href="<?= asset('img/10.jpg') ?>" type="image/x-icon">
 </head>
 
 <body>
@@ -88,8 +88,8 @@ require_once(__DIR__ . '/../bootstrap.php');
     <!-- Footer -->
     <?php include "../includes/footer.php" ?>
 </body>
-<script src="../assets/js/contants.js"></script>
-<script src="../assets/js/game.js"></script>
-<script src="../assets/js/roleTable.js"></script>
+<script src="<?= asset('js/contants.js') ?>"></script>
+<script src="<?= asset('js/game.js') ?>"></script>
+<script src="<?= asset('js/roleTable.js') ?>"></script>
 
 </html>
