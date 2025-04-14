@@ -1,143 +1,120 @@
 class CaroUI {
-    constructor() {
-        this.boardSize = 15;
-        this.board = [];
-        this.gameType = this.getGameType();
-        this.timer = null;
-        this.startTime = new Date();
-        this.mySymbol = X;
-        this.opponentSymbol = O;
-        this.isMyTurn = false;
-        this.isGameOver = false;
+    constructor(gameType) {
+        this.gameType = gameType;
+        this.mySymbol = null;
+        this.opponentSymbol = null;
+        this.table = document.getElementById('table_game');
+        this.statusElement = document.getElementById('gameStatus');
+        this.playerTurnElement = document.getElementById('playerTurn');
+        this.timerElement = document.getElementById('gameTimer');
+        this.backButton = document.getElementById('backButton');
+        this.surrenderBtn = document.getElementById('surrenderBtn');
+        this.showRulesBtn = document.getElementById('showRulesBtn');
+        this.rulesModal = document.getElementById('rulesModal');
+        this.closeModal = null; // Khởi tạo ban đầu là null
+        this.gameEnded = false;
+        this.startTime = Date.now();
 
-        // Khởi tạo UI
         this.initBoard();
-        this.setupEventListeners();
-        this.updateStatus("Đang khởi tạo...");
-        this.startTimer();
-
-        // Khởi tạo kết nối với backend
-        this.gameHandler = new CaroGame(this);
-    }
-
-    getGameType() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('type') || COMPUTER;
+        this.initModal(); // Khởi tạo modal riêng
+        this.initEventListeners();
+        this.updateTimer();
     }
 
     initBoard() {
-        const table = document.getElementById('table_game');
-        table.innerHTML = '';
-
-        for (let i = 0; i < this.boardSize; i++) {
+        for (let i = 0; i < 15; i++) {
             const row = document.createElement('tr');
-            this.board[i] = [];
-
-            for (let j = 0; j < this.boardSize; j++) {
+            for (let j = 0; j < 15; j++) {
                 const cell = document.createElement('td');
                 cell.dataset.row = i;
                 cell.dataset.col = j;
-                cell.addEventListener('click', () => this.handleCellClick(i, j));
                 row.appendChild(cell);
-                this.board[i][j] = EMPTY;
             }
-
-            table.appendChild(row);
+            this.table.appendChild(row);
         }
     }
 
-    handleCellClick(row, col) {
-        // Kiểm tra trạng thái game
-        if (this.isGameOver || this.board[row][col] !== EMPTY || !this.isMyTurn) {
-            return;
+    initModal() {
+        if (this.rulesModal) {
+            this.closeModal = this.rulesModal.querySelector('.close');
+        } else {
+            console.error("Không tìm thấy phần tử rulesModal trong DOM");
         }
-
-        // Gửi nước đi tới game handler
-        this.gameHandler.makeMove(row, col);
     }
 
-    // Cập nhật UI sau mỗi nước đi
-    updateBoard(row, col, symbol) {
-        this.board[row][col] = symbol;
-        this.updateCell(row, col);
+    initEventListeners() {
+        this.table.addEventListener('click', (event) => {
+            if (this.gameEnded) return;
+            const cell = event.target;
+            if (cell.tagName !== 'TD') return;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            const game = window.game;
+            game.makeMove(row, col);
+        });
+
+        this.surrenderBtn.addEventListener('click', () => {
+            if (this.gameEnded) return;
+            const game = window.game;
+            game.surrender();
+        });
+
+        this.backButton.addEventListener('click', () => {
+            window.location.href = '/';
+        });
+
+        if (this.showRulesBtn && this.rulesModal && this.closeModal) {
+            this.showRulesBtn.addEventListener('click', () => {
+                this.rulesModal.style.display = 'block';
+            });
+
+            this.closeModal.addEventListener('click', () => {
+                this.rulesModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === this.rulesModal) {
+                    this.rulesModal.style.display = 'none';
+                }
+            });
+        } else {
+            console.warn("Không thể gắn sự kiện cho modal vì một số phần tử không tồn tại");
+        }
     }
 
-    updateCell(row, col) {
-        const cell = document.querySelector(`td[data-row="${row}"][data-col="${col}"]`);
-        if (cell) {
-            cell.textContent = this.board[row][col];
-            cell.classList.add(this.board[row][col].toLowerCase());
-        }
+    updateCell(row, col, symbol) {
+        const cell = this.table.rows[row].cells[col];
+        cell.textContent = symbol;
+        cell.className = symbol === X ? 'x' : 'o';
     }
 
     updateStatus(message) {
-        document.getElementById('currentResult').textContent = message;
+        this.statusElement.textContent = message;
     }
 
     updatePlayerTurn(isMyTurn) {
-        this.isMyTurn = isMyTurn;
-        const playerTurnElement = document.getElementById('playerTurn');
-        if (this.gameType === TWO_PLAYER) {
-            playerTurnElement.textContent = this.isMyTurn ? 'Lượt của bạn' : 'Lượt đối thủ';
-        } else {
-            playerTurnElement.textContent = this.isMyTurn ? 'Lượt của bạn' : 'Lượt của máy';
+        this.playerTurnElement.textContent = isMyTurn ? 'Lượt của bạn' : 'Lượt của máy';
+    }
+
+    highlightWinningCells(cells) {
+        for (const [row, col] of cells) {
+            const cell = this.table.rows[row].cells[col];
+            cell.classList.add('win');
         }
     }
 
-    startTimer() {
-        this.timer = setInterval(() => {
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - this.startTime) / 1000);
-            const minutes = Math.floor(diffInSeconds / 60).toString().padStart(2, '0');
-            const seconds = (diffInSeconds % 60).toString().padStart(2, '0');
-            document.getElementById('gameTimer').textContent = `${minutes}:${seconds}`;
+    endGame() {
+        this.gameEnded = true;
+        this.surrenderBtn.disabled = true;
+    }
+
+    updateTimer() {
+        setInterval(() => {
+            if (this.gameEnded) return;
+            const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+            const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const seconds = String(elapsed % 60).padStart(2, '0');
+            this.timerElement.textContent = `Thời gian: ${minutes}:${seconds}`;
         }, 1000);
     }
-
-    stopTimer() {
-        clearInterval(this.timer);
-    }
-
-    endGame(isWinner) {
-        this.isGameOver = true;
-        this.stopTimer();
-
-        if (isWinner === null) {
-            this.updateStatus('Trận đấu hòa!');
-        } else if (isWinner) {
-            this.updateStatus('Bạn đã thắng! 🎉');
-        } else {
-            this.updateStatus(this.gameType === TWO_PLAYER ? 'Bạn đã thua! 😢' : 'Máy tính đã thắng! 😢');
-        }
-    }
-
-    setupEventListeners() {
-        // Quay lại menu chính
-        document.getElementById('backButton').addEventListener('click', () => {
-            window.location.href = 'caro.php';
-        });
-
-        // Hiển thị quy tắc
-        document.getElementById('showRulesBtn').addEventListener('click', () => {
-            document.getElementById('rulesPopup').style.display = 'flex';
-        });
-
-        // Đóng quy tắc
-        document.getElementById('closeRulesBtn').addEventListener('click', () => {
-            document.getElementById('rulesPopup').style.display = 'none';
-        });
-
-        // Đầu hàng
-        document.getElementById('surrenderBtn').addEventListener('click', () => {
-            if (confirm('Bạn có chắc chắn muốn đầu hàng?')) {
-                this.gameHandler.surrender();
-                this.endGame(false);
-            }
-        });
-    }
 }
-
-// Khởi tạo UI khi trang đã tải xong
-document.addEventListener('DOMContentLoaded', () => {
-    window.caroUI = new CaroUI();
-});

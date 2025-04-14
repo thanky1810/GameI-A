@@ -35,7 +35,7 @@ function loadEnv($path)
 loadEnv(__DIR__ . '/.env');
 
 // Định nghĩa APP_ENV từ file .env
-define('APP_ENV', getenv('APP_ENV') ?? 'local');
+define('WEBSOCKET_URL', getenv('WEBSOCKET_URL') ?? 'ws://localhost');
 
 // Tự động xác định nếu đang chạy trên localhost
 if (!defined('IS_LOCAL')) {
@@ -44,7 +44,7 @@ if (!defined('IS_LOCAL')) {
 
     define(
         'IS_LOCAL',
-        APP_ENV === 'local' ||
+        WEBSOCKET_URL === 'local' ||
             $server_name === 'localhost' ||
             $server_name === '192.168.1.10' ||
             strpos($server_name, '192.168.') === 0 ||

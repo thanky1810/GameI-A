@@ -1,14 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION["user"])) {
-    http_response_code(404);
-    die("404 Not Found");
-}
-require_once(__DIR__ . '/../includes/functions.php');
-require_once(__DIR__ . '/../bootstrap.php');
-
-// Lấy chế độ chơi từ URL
-$type = isset($_GET['type']) ? $_GET['type'] : 'two_player';
+// Giả lập đăng nhập để có $_SESSION['user'] (sẽ bỏ sau khi bạn có hệ thống đăng nhập)
+$_SESSION['user'] = ['ID' => 1];
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -16,72 +9,34 @@ $type = isset($_GET['type']) ? $_GET['type'] : 'two_player';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME I&R Online</title>
-    <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/pGame.css">
+    <title>Cờ Caro - Gomoku Game</title>
     <link rel="stylesheet" href="../assets/css/caro.css">
-    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
 </head>
 
 <body>
-    <!-- Header -->
-    <?php include "../includes/header.php" ?>
+    <div>
+        <h1>Cờ Caro - Gomoku Game</h1>
+        <h2 id="gameTimer">Thời gian: 00:00</h2>
+        <h3 id="gameStatus">Đang khởi tạo...</h3>
+        <h3 id="playerTurn">Lượt của bạn</h3>
+        <table id="table_game"></table>
+        <button id="backButton">Quay lại</button>
+        <button id="surrenderBtn">Đầu hàng</button>
+        <button id="showRulesBtn">Hiển thị luật chơi</button>
+    </div>
 
-    <main>
-        <h1>CỜ CARO <span class="stars">⭐⭐⭐⭐⭐</span></h1>
-        <div class="buttons">
-            <button class="back" id="backButton">
-                << </button>
-                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-                    <button class="btn play-btn" id="surrenderBtn">Đầu hàng</button>
+    <div id="rulesModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <p>Luật chơi: <br>
+                - Mỗi người chơi lần lượt đánh ký hiệu X hoặc O. <br>
+                - Người chơi nào xếp được 5 ký hiệu liên tiếp theo hàng ngang, dọc, hoặc chéo sẽ thắng.</p>
         </div>
-
-        <div class="game-info">
-            <div class="timer">
-                <span>Thời gian: </span>
-                <span id="gameTimer">00:00</span>
-            </div>
-            <div class="current-result">
-                <span>Kết quả: </span>
-                <span id="currentResult">Đang khởi tạo...</span>
-            </div>
-            <div class="player-turn">
-                <span>Lượt: </span>
-                <span id="playerTurn">-</span>
-            </div>
-            <div class="game-mode">
-                <span>Chế độ: </span>
-                <span id="gameMode"><?php echo $type === 'computer' ? 'Đấu với máy' : 'Hai người chơi'; ?></span>
-            </div>
-        </div>
-
-        <!-- Bảng Quy tắc Modal -->
-        <div class="rules-popup" id="rulesPopup">
-            <div class="rules-content">
-                <button id="closeRulesBtn" class="close-btn">❌</button>
-                <h2>Quy tắc trò cờ ca rô</h2>
-                <p>Trò chơi cờ ca rô phổ biến, về mặt logic tương tự như trò chơi bàn cờ có nguồn gốc từ Trung Quốc là Gomoku. Trò chơi được chơi trên một bàn cờ hình vuông, 15x15 ô vuông.</p>
-                <h3>Mục tiêu của trò chơi</h3>
-                <p>Trở thành người đầu tiên xếp một hàng bằng năm ký hiệu liên nhau (hoặc nhiều hơn) theo bất kỳ hướng nào: theo chiều ngang, chiều dọc, đường chéo.</p>
-            </div>
-        </div>
-
-        <!-- Game Board -->
-        <div class="game-container">
-            <h2>Cờ Caro - Gomoku Game</h2>
-            <table id="table_game"></table>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <?php include "../includes/footer.php" ?>
+    </div>
 
     <script src="../assets/js/contants.js"></script>
-    <script src="../assets/js/pGame.js"></script>
-    <script src="../assets/js/caro-game.js"></script>
     <script src="../assets/js/caro-ui.js"></script>
-
-
+    <script src="../assets/js/caro-game.js"></script>
 </body>
 
 </html>
