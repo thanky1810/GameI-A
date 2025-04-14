@@ -35,8 +35,9 @@ $_SESSION['user'] = ['ID' => 1];
     </div>
 
     <script src="../assets/js/contants.js"></script>
-    <script src="../assets/js/caro-ui.js"></script>
     <script src="../assets/js/caro-game.js"></script>
+    <script src="../assets/js/caro-ui.js"></script>
+
 </body>
 
 </html>
