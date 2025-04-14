@@ -12,7 +12,7 @@ class CaroGame
     /**
      * Kiểm tra thắng/thua
      */
-    public function checkWin($board, $row, $col, $symbol)
+    public function checkWin($board, $row, $col, $symbol, &$winningCells = [])
     {
         $directions = [
             [1, 0],  // ngang
@@ -20,49 +20,47 @@ class CaroGame
             [1, 1],  // chéo xuống
             [1, -1]  // chéo lên
         ];
-
         foreach ($directions as $dir) {
             $dx = $dir[0];
             $dy = $dir[1];
             $count = 1;
+            $cells = [['row' => $row, 'col' => $col]];
 
-            // Đếm theo hướng dương
+            // Đếm hướng dương
             for ($i = 1; $i < 5; $i++) {
                 $newRow = $row + $dx * $i;
                 $newCol = $col + $dy * $i;
-
                 if ($newRow < 0 || $newRow >= $this->boardSize || $newCol < 0 || $newCol >= $this->boardSize) {
                     break;
                 }
-
                 if ($board[$newRow][$newCol] === $symbol) {
                     $count++;
+                    $cells[] = ['row' => $newRow, 'col' => $newCol];
                 } else {
                     break;
                 }
             }
 
-            // Đếm theo hướng âm
+            // Đếm hướng âm
             for ($i = 1; $i < 5; $i++) {
                 $newRow = $row - $dx * $i;
                 $newCol = $col - $dy * $i;
-
                 if ($newRow < 0 || $newRow >= $this->boardSize || $newCol < 0 || $newCol >= $this->boardSize) {
                     break;
                 }
-
                 if ($board[$newRow][$newCol] === $symbol) {
                     $count++;
+                    $cells[] = ['row' => $newRow, 'col' => $newCol];
                 } else {
                     break;
                 }
             }
 
             if ($count >= 5) {
+                $winningCells = $cells;
                 return true;
             }
         }
-
         return false;
     }
 
@@ -89,12 +87,13 @@ class CaroGame
         $symbol = 'O';
         $opponentSymbol = 'X';
 
-        // Kiểm tra nếu máy có thể thắng trong một nước
+        // Kiểm tra thắng ngay lập tức
         for ($i = 0; $i < $this->boardSize; $i++) {
             for ($j = 0; $j < $this->boardSize; $j++) {
                 if ($board[$i][$j] === '') {
                     $board[$i][$j] = $symbol;
                     if ($this->checkWin($board, $i, $j, $symbol)) {
+                        $board[$i][$j] = '';
                         return ['row' => $i, 'col' => $j];
                     }
                     $board[$i][$j] = '';
@@ -102,12 +101,13 @@ class CaroGame
             }
         }
 
-        // Kiểm tra nếu cần chặn người chơi thắng
+        // Kiểm tra chặn người chơi thắng
         for ($i = 0; $i < $this->boardSize; $i++) {
             for ($j = 0; $j < $this->boardSize; $j++) {
                 if ($board[$i][$j] === '') {
                     $board[$i][$j] = $opponentSymbol;
                     if ($this->checkWin($board, $i, $j, $opponentSymbol)) {
+                        $board[$i][$j] = '';
                         return ['row' => $i, 'col' => $j];
                     }
                     $board[$i][$j] = '';
@@ -115,29 +115,71 @@ class CaroGame
             }
         }
 
-        // Đánh vào vị trí có tiềm năng cao
-        $scores = $this->evaluateBoard($board);
-        $maxScore = -1;
-        $bestMoves = [];
-
+        // Minimax đơn giản (độ sâu 2)
+        $bestScore = -INF;
+        $bestMove = null;
         for ($i = 0; $i < $this->boardSize; $i++) {
             for ($j = 0; $j < $this->boardSize; $j++) {
-                if ($board[$i][$j] === '' && $scores[$i][$j] > $maxScore) {
-                    $maxScore = $scores[$i][$j];
-                    $bestMoves = [['row' => $i, 'col' => $j]];
-                } else if ($board[$i][$j] === '' && $scores[$i][$j] === $maxScore) {
-                    $bestMoves[] = ['row' => $i, 'col' => $j];
+                if ($board[$i][$j] === '') {
+                    $board[$i][$j] = $symbol;
+                    $score = $this->minimax($board, 1, false, $symbol, $opponentSymbol);
+                    $board[$i][$j] = '';
+                    if ($score > $bestScore) {
+                        $bestScore = $score;
+                        $bestMove = ['row' => $i, 'col' => $j];
+                    }
                 }
             }
         }
 
-        // Chọn ngẫu nhiên một trong các nước đi tốt nhất
-        if (count($bestMoves) > 0) {
-            $randIndex = rand(0, count($bestMoves) - 1);
-            return $bestMoves[$randIndex];
+        return $bestMove ?? $this->randomMove($board);
+    }
+
+    private function minimax($board, $depth, $isMaximizing, $symbol, $opponentSymbol)
+    {
+        if ($depth == 0) {
+            return $this->evaluateBoard($board)[$symbol];
         }
 
-        // Nếu không tìm thấy nước đi nào tốt, chọn vị trí ngẫu nhiên
+        if ($isMaximizing) {
+            $bestScore = -INF;
+            for ($i = 0; $i < $this->boardSize; $i++) {
+                for ($j = 0; $j < $this->boardSize; $j++) {
+                    if ($board[$i][$j] === '') {
+                        $board[$i][$j] = $symbol;
+                        if ($this->checkWin($board, $i, $j, $symbol)) {
+                            $board[$i][$j] = '';
+                            return 1000;
+                        }
+                        $score = $this->minimax($board, $depth - 1, false, $symbol, $opponentSymbol);
+                        $board[$i][$j] = '';
+                        $bestScore = max($bestScore, $score);
+                    }
+                }
+            }
+            return $bestScore;
+        } else {
+            $bestScore = INF;
+            for ($i = 0; $i < $this->boardSize; $i++) {
+                for ($j = 0; $j < $this->boardSize; $j++) {
+                    if ($board[$i][$j] === '') {
+                        $board[$i][$j] = $opponentSymbol;
+                        if ($this->checkWin($board, $i, $j, $opponentSymbol)) {
+                            $board[$i][$j] = '';
+                            return -1000;
+                        }
+                        $score = $this->minimax($board, $depth - 1, true, $symbol, $opponentSymbol);
+                        $board[$i][$j] = '';
+                        $bestScore = min($bestScore, $score);
+                    }
+                }
+            }
+            return $bestScore;
+        }
+    }
+
+    private function randomMove($board)
+    {
         $emptyPositions = [];
         for ($i = 0; $i < $this->boardSize; $i++) {
             for ($j = 0; $j < $this->boardSize; $j++) {
@@ -146,12 +188,9 @@ class CaroGame
                 }
             }
         }
-
-        if (count($emptyPositions) > 0) {
-            $randIndex = rand(0, count($emptyPositions) - 1);
-            return $emptyPositions[$randIndex];
+        if (!empty($emptyPositions)) {
+            return $emptyPositions[array_rand($emptyPositions)];
         }
-
         return null;
     }
 
