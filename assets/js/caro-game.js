@@ -4,12 +4,13 @@ class CaroGame {
         this.currentPlayer = 'X';
         const typeParam = new URLSearchParams(window.location.search).get('type') || 'player-computer';
         this.gameMode = (typeParam === '2-players') ? 'two-players' : typeParam;
-        this.gameId = null; // Sẽ được server gán
-        this.playerSymbol = null; // Sẽ được server gán
-        this.opponentSymbol = null; // Sẽ được server gán
+        this.gameId = null;
+        this.playerSymbol = null;
+        this.opponentSymbol = null;
         this.isYourTurn = false;
         this.socket = null;
         this.gameOver = false;
+        this.lastBoardState = null;
     }
 
     init() {
@@ -19,12 +20,13 @@ class CaroGame {
             this.initSocket();
         } else {
             this.isYourTurn = true;
-            CaroUI.updateTurn(this.isYourTurn);
         }
     }
 
     initBoard() {
+        console.log('Initializing board...');
         this.board = Array(15).fill().map(() => Array(15).fill(''));
+        this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
     }
 
@@ -58,15 +60,16 @@ class CaroGame {
                     this.opponentSymbol = data.opponentSymbol;
                     this.board = data.board;
                     this.isYourTurn = data.isYourTurn;
-                    CaroUI.showMessage('Trận đấu bắt đầu!');
+                    CaroUI.showMessage('Đang chơi...');
+                    this.lastBoardState = JSON.stringify(this.board);
                     CaroUI.renderBoard(this.board);
-                    CaroUI.updateTurn(this.isYourTurn);
                     break;
                 case 'move':
+                    console.log('Receiving move:', data);
                     this.board = data.board;
                     this.isYourTurn = data.currentPlayer === this.playerSymbol;
+                    this.lastBoardState = JSON.stringify(this.board);
                     CaroUI.renderBoard(this.board);
-                    CaroUI.updateTurn(this.isYourTurn);
                     if (data.isWin) {
                         this.gameOver = true;
                         CaroUI.highlightWinningCells(data.winningCells);
@@ -78,9 +81,16 @@ class CaroGame {
                     break;
                 case 'your_turn':
                     this.board = data.board;
-                    this.isYourTurn = true;
-                    CaroUI.renderBoard(this.board);
-                    CaroUI.updateTurn(this.isYourTurn);
+                    const newBoardState = JSON.stringify(this.board);
+                    console.log('Received your_turn - Last:', this.lastBoardState, 'Current:', newBoardState);
+                    if (newBoardState !== this.lastBoardState) {
+                        this.isYourTurn = true;
+                        this.lastBoardState = newBoardState;
+                        console.log('Board state changed, rendering board...');
+                        CaroUI.renderBoard(this.board);
+                    } else {
+                        console.log('Board state unchanged, skipping render.');
+                    }
                     break;
                 case 'surrender':
                     this.gameOver = true;
@@ -123,10 +133,11 @@ class CaroGame {
 
     handleTwoPlayerMove(row, col) {
         this.board[row][col] = this.playerSymbol;
+        this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
         this.isYourTurn = false;
-        CaroUI.updateTurn(this.isYourTurn);
 
+        console.log('Sending move:', { row, col, symbol: this.playerSymbol });
         this.socket.send(JSON.stringify({
             type: 'move',
             gameId: this.gameId,
@@ -138,6 +149,7 @@ class CaroGame {
 
     async handlePlayerComputerMove(row, col) {
         this.board[row][col] = this.currentPlayer;
+        this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
 
         if (this.checkWin(row, col, this.currentPlayer)) {
@@ -154,7 +166,6 @@ class CaroGame {
 
         this.currentPlayer = 'O';
         this.isYourTurn = false;
-        CaroUI.updateTurn(this.isYourTurn);
 
         try {
             const response = await fetch('/Project/api/caro-state.php', {
@@ -172,6 +183,7 @@ class CaroGame {
             if (data.success && data.move) {
                 const { row: botRow, col: botCol } = data.move;
                 this.board[botRow][botCol] = this.currentPlayer;
+                this.lastBoardState = JSON.stringify(this.board);
                 CaroUI.renderBoard(this.board);
 
                 if (this.checkWin(botRow, botCol, this.currentPlayer)) {
@@ -195,7 +207,6 @@ class CaroGame {
 
         this.currentPlayer = 'X';
         this.isYourTurn = true;
-        CaroUI.updateTurn(this.isYourTurn);
     }
 
     checkWin(row, col, symbol) {
@@ -259,6 +270,7 @@ class CaroGame {
         this.board = Array(15).fill().map(() => Array(15).fill(''));
         this.currentPlayer = 'X';
         this.gameOver = false;
+        this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
 
         if (this.gameMode === 'two-players') {
@@ -268,7 +280,6 @@ class CaroGame {
             this.initSocket();
         } else {
             this.isYourTurn = true;
-            CaroUI.updateTurn(this.isYourTurn);
             CaroUI.showMessage('');
         }
     }
@@ -279,11 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.game = game;
     game.init();
 
-    document.getElementById('surrender-button').addEventListener('click', () => {
-        game.surrender();
-    });
-
-    document.getElementById('reset-button').addEventListener('click', () => {
-        game.reset();
-    });
+    const surrenderButton = document.getElementById('surrender-button');
+    if (surrenderButton) {
+        surrenderButton.addEventListener('click', () => {
+            game.surrender();
+        });
+    } else {
+        console.error('Surrender button not found. Please check if the element with id="surrender-button" exists in the DOM.');
+    }
 });

@@ -48,14 +48,11 @@ class CaroWebSocket implements MessageComponentInterface
 
     protected function handleJoin(ConnectionInterface $from)
     {
-        // Kiểm tra xem có game nào đang chờ không
         if (!empty($this->waitingGames)) {
-            // Lấy game đầu tiên trong danh sách chờ
             $gameId = array_key_first($this->waitingGames);
             $game = $this->waitingGames[$gameId];
             unset($this->waitingGames[$gameId]);
 
-            // Thêm người chơi thứ hai vào game
             $game['player2'] = $from;
             $this->games[$gameId] = [
                 'player1' => $game['player1'],
@@ -67,7 +64,6 @@ class CaroWebSocket implements MessageComponentInterface
             echo "Player {$from->resourceId} joined game $gameId as O\n";
             echo "Game $gameId started!\n";
 
-            // Thông báo cho cả hai người chơi rằng game bắt đầu
             $game['player1']->send(json_encode([
                 'type' => 'start',
                 'gameId' => $gameId,
@@ -86,7 +82,6 @@ class CaroWebSocket implements MessageComponentInterface
                 'isYourTurn' => false
             ]));
         } else {
-            // Tạo game mới và thêm vào danh sách chờ
             $gameId = uniqid();
             $this->waitingGames[$gameId] = [
                 'player1' => $from
@@ -94,7 +89,6 @@ class CaroWebSocket implements MessageComponentInterface
 
             echo "Player {$from->resourceId} joined game $gameId as X (waiting for opponent)\n";
 
-            // Thông báo cho người chơi rằng đang chờ đối thủ
             $from->send(json_encode([
                 'type' => 'waiting',
                 'gameId' => $gameId
@@ -123,6 +117,16 @@ class CaroWebSocket implements MessageComponentInterface
         $isDraw = $this->isBoardFull($game['board']);
         $winningCells = $isWin ? $this->getWinningCells($game['board'], $row, $col, $symbol) : [];
 
+        // Lưu lại trạng thái game
+        $this->games[$gameId] = $game;
+
+        // Log trạng thái bảng
+        echo "Move by {$symbol} in game $gameId at ($row, $col)\n";
+        echo "Board state:\n";
+        foreach ($game['board'] as $boardRow) {
+            echo implode(' ', $boardRow) . "\n";
+        }
+
         // Gửi thông tin nước đi cho cả hai người chơi
         $message = [
             'type' => 'move',
@@ -134,6 +138,9 @@ class CaroWebSocket implements MessageComponentInterface
             'isDraw' => $isDraw,
             'winningCells' => $winningCells
         ];
+
+        echo "Sending move to player1 ({$game['player1']->resourceId}): " . json_encode($message) . "\n";
+        echo "Sending move to player2 ({$game['player2']->resourceId}): " . json_encode($message) . "\n";
 
         $game['player1']->send(json_encode($message));
         $game['player2']->send(json_encode($message));
@@ -254,7 +261,6 @@ class CaroWebSocket implements MessageComponentInterface
     {
         $this->clients->detach($conn);
 
-        // Kiểm tra xem người chơi có đang trong game không
         foreach ($this->games as $gameId => $game) {
             if ($game['player1'] === $conn || $game['player2'] === $conn) {
                 $opponent = ($game['player1'] === $conn) ? $game['player2'] : $game['player1'];
@@ -268,7 +274,6 @@ class CaroWebSocket implements MessageComponentInterface
             }
         }
 
-        // Kiểm tra xem người chơi có đang trong danh sách chờ không
         foreach ($this->waitingGames as $gameId => $game) {
             if ($game['player1'] === $conn) {
                 unset($this->waitingGames[$gameId]);
