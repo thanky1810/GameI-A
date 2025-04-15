@@ -1,9 +1,18 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #1a2526;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
 h1 {
   color: white;
   line-height: 1em;
-  margin-bottom: 0;
+  margin: 10px 0;
   padding-bottom: 5px;
-  font-size: 2.8em;
+  font-size: 48px;
   font-weight: bold;
 }
 
@@ -36,9 +45,9 @@ table {
 }
 
 #table_game td {
-  border: 1px solid rgb(230, 230, 230);
-  width: 40px;
-  height: 40px;
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
   padding: 0;
   vertical-align: middle;
   text-align: center;
@@ -54,16 +63,12 @@ table {
   background-color: #d0d0d0;
 }
 
-#table_game td.x::after {
-  content: "X";
-  color: darksalmon;
-  font-size: 0.9em;
+#table_game td.x {
+  color: #e74c3c; /* Màu đỏ cho X */
 }
 
-#table_game td.o::after {
-  content: "O";
-  color: aquamarine;
-  font-size: 0.8em;
+#table_game td.o {
+  color: #2ecc71; /* Màu xanh lá cho O */
 }
 
 #table_game td.winning-cell {
@@ -71,19 +76,58 @@ table {
   animation: blink 1s infinite;
 }
 
+.stars {
+  margin-left: 10px;
+  font-size: 30px;
+  color: #ffd700;
+  letter-spacing: 5px;
+}
+
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.game-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+#back-button {
+  background-color: #555;
+  color: white;
+}
+
+#surrender-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.game-info {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+
 .td_game {
-  border: 4px solid rgb(230, 230, 230);
-  width: 60px;
-  height: 60px;
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
   padding: 0;
   vertical-align: middle;
   text-align: center;
 }
 
 .fixed {
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
   display: block;
   overflow: hidden;
   cursor: pointer;
