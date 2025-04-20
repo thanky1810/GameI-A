@@ -14,7 +14,6 @@ class CaroGame {
     }
 
     init() {
-        console.log('Game mode:', this.gameMode);
         this.initBoard();
         if (this.gameMode === 'two-players') {
             this.initSocket();
@@ -24,7 +23,6 @@ class CaroGame {
     }
 
     initBoard() {
-        console.log('Initializing board...');
         this.board = Array(15).fill().map(() => Array(15).fill(''));
         this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
@@ -41,7 +39,6 @@ class CaroGame {
         this.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
-            console.log('WebSocket connected');
             this.socket.send(JSON.stringify({
                 type: 'join'
             }));
@@ -65,7 +62,6 @@ class CaroGame {
                     CaroUI.renderBoard(this.board);
                     break;
                 case 'move':
-                    console.log('Receiving move:', data);
                     this.board = data.board;
                     this.isYourTurn = data.currentPlayer === this.playerSymbol;
                     this.lastBoardState = JSON.stringify(this.board);
@@ -82,14 +78,10 @@ class CaroGame {
                 case 'your_turn':
                     this.board = data.board;
                     const newBoardState = JSON.stringify(this.board);
-                    console.log('Received your_turn - Last:', this.lastBoardState, 'Current:', newBoardState);
                     if (newBoardState !== this.lastBoardState) {
                         this.isYourTurn = true;
                         this.lastBoardState = newBoardState;
-                        console.log('Board state changed, rendering board...');
                         CaroUI.renderBoard(this.board);
-                    } else {
-                        console.log('Board state unchanged, skipping render.');
                     }
                     break;
                 case 'surrender':
@@ -107,14 +99,12 @@ class CaroGame {
         };
 
         this.socket.onclose = () => {
-            console.log('WebSocket disconnected');
             if (!this.gameOver) {
                 CaroUI.showMessage('Mất kết nối với server.');
             }
         };
 
-        this.socket.onerror = (error) => {
-            console.error('WebSocket error:', error);
+        this.socket.onerror = () => {
             CaroUI.showMessage('Không thể kết nối đến server.');
         };
     }
@@ -137,7 +127,6 @@ class CaroGame {
         CaroUI.renderBoard(this.board);
         this.isYourTurn = false;
 
-        console.log('Sending move:', { row, col, symbol: this.playerSymbol });
         this.socket.send(JSON.stringify({
             type: 'move',
             gameId: this.gameId,
@@ -201,7 +190,6 @@ class CaroGame {
                 CaroUI.showMessage('Máy không thể đánh. Có lỗi xảy ra.');
             }
         } catch (error) {
-            console.error('Error calling API:', error);
             CaroUI.showMessage('Không thể kết nối đến API.');
         }
 
@@ -295,7 +283,5 @@ document.addEventListener('DOMContentLoaded', () => {
         surrenderButton.addEventListener('click', () => {
             game.surrender();
         });
-    } else {
-        console.error('Surrender button not found. Please check if the element with id="surrender-button" exists in the DOM.');
     }
 });
