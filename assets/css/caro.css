@@ -1,10 +1,9 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #1a2526;
+  background-color: #0b0f19;
   color: white;
   margin: 0;
-  padding: 20px;
 }
 
 h1 {
@@ -22,6 +21,7 @@ h2 {
   font-weight: bold;
   padding: 0;
   margin: 0;
+  margin-bottom: 20px;
 }
 
 h3 {

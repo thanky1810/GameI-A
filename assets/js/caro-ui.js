@@ -3,19 +3,15 @@ class CaroUI {
         const messageElement = document.getElementById('message');
         if (messageElement) {
             messageElement.textContent = `Kết cục: ${message}`;
-        } else {
-            console.error('Message element not found');
         }
     }
 
     static renderBoard(board) {
         const gameBoard = document.getElementById('table_game');
         if (!gameBoard) {
-            console.error('Game board element not found');
             return;
         }
 
-        console.log('Rendering board:', board);
         gameBoard.innerHTML = '';
         for (let row = 0; row < 15; row++) {
             const tr = document.createElement('tr');
@@ -33,15 +29,12 @@ class CaroUI {
                 }
                 if (window.game) {
                     div.addEventListener('click', () => window.game.makeMove(row, col));
-                } else {
-                    console.error('window.game is not defined');
                 }
                 td.appendChild(div);
                 tr.appendChild(td);
             }
             gameBoard.appendChild(tr);
         }
-        console.log('Board rendered successfully with moves:', board.flat().filter(cell => cell !== '').length);
     }
 
     static highlightWinningCells(cells) {

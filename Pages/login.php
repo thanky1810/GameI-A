@@ -1,7 +1,6 @@
 <?php
 session_start();
 include "../includes/database.php";
-
 // Hàm tạo tên không trùng lặp
 function randomName($conn)
 {

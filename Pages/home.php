@@ -12,7 +12,6 @@ require_once(__DIR__ . '/../bootstrap.php');
     <link rel="shortcut icon" href="<?= asset('img/10.jpg') ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= asset('css/home.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/main.css') ?>">
-    <link rel="stylesheet" href="<?= asset('css/caro.css') ?>">
 </head>
 
 <body>
