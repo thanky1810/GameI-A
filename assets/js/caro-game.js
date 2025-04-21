@@ -157,37 +157,42 @@ class CaroGame {
         this.isYourTurn = false;
 
         try {
-            const response = await fetch('/Project/api/caro-state.php', {
+            const response = await fetch('/Project/api/caro-move.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    board: this.board,
-                    player: this.currentPlayer
+                    gameId: this.gameId,
+                    action: 'move',
+                    row: row,
+                    col: col,
+                    symbol: 'X',
+                    type: 'player-computer'
                 })
             });
 
             const data = await response.json();
-            if (data.success && data.move) {
-                const { row: botRow, col: botCol } = data.move;
-                this.board[botRow][botCol] = this.currentPlayer;
+            // Hiển thị thông tin debug trên giao diện
+            if (data.debug && Array.isArray(data.debug)) {
+                CaroUI.showMessage(data.debug.join(' | '));
+            }
+            if (data.result === 'WIN') {
+                this.gameOver = true;
+                CaroUI.showMessage('Bạn thắng! | ' + (data.debug ? data.debug.join(' | ') : ''));
+                CaroUI.highlightWinningCells(data.winningCells);
+            } else if (data.result === 'DRAW') {
+                this.gameOver = true;
+                CaroUI.showMessage('Hòa! | ' + (data.debug ? data.debug.join(' | ') : ''));
+            } else if (data.computerResult === 'WIN') {
+                this.gameOver = true;
+                CaroUI.showMessage('Máy thắng! | ' + (data.debug ? data.debug.join(' | ') : ''));
+                CaroUI.highlightWinningCells(data.winningCells);
+            } else {
+                this.board = data.board;
+                this.currentPlayer = data.currentPlayer;
                 this.lastBoardState = JSON.stringify(this.board);
                 CaroUI.renderBoard(this.board);
-
-                if (this.checkWin(botRow, botCol, this.currentPlayer)) {
-                    this.gameOver = true;
-                    CaroUI.showMessage('Máy thắng!');
-                    return;
-                }
-
-                if (this.isBoardFull()) {
-                    this.gameOver = true;
-                    CaroUI.showMessage('Hòa!');
-                    return;
-                }
-            } else {
-                CaroUI.showMessage('Máy không thể đánh. Có lỗi xảy ra.');
             }
         } catch (error) {
             CaroUI.showMessage('Không thể kết nối đến API.');
