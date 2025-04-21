@@ -120,12 +120,6 @@ class CaroWebSocket implements MessageComponentInterface
         // Lưu lại trạng thái game
         $this->games[$gameId] = $game;
 
-        // Log trạng thái bảng
-        echo "Move by {$symbol} in game $gameId at ($row, $col)\n";
-        echo "Board state:\n";
-        foreach ($game['board'] as $boardRow) {
-            echo implode(' ', $boardRow) . "\n";
-        }
 
         // Gửi thông tin nước đi cho cả hai người chơi
         $message = [

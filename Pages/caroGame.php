@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION["user"])) {
+    http_response_code(404);
+    die("404 Not Found");
+}
+require_once(__DIR__ . '/../includes/functions.php');
+require_once(__DIR__ . '/../bootstrap.php');
+?>
 <!DOCTYPE html>
 <html lang="vi">
 

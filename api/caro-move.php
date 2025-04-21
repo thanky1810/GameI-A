@@ -63,22 +63,24 @@ if ($action === 'move') {
             $game['status'] = 'ended';
             $game['winner'] = $symbol;
             $result = 'WIN';
+            $debugMessages = ["Người chơi thắng, chuẩn bị lưu điểm..."];
             if (isset($_SESSION['user'])) {
                 $userId = $_SESSION['user']['ID'];
-                $gameType = 1;
+                $score = 5; // Cộng 5 điểm khi thắng
                 $win = 1;
-                $score = 10;
+                $debugMessages[] = "Người dùng ID: $userId, Điểm sẽ cộng: $score";
                 try {
-                    $stmt = $conn->prepare("INSERT INTO gamehistory (userId, gameID, score, win) VALUES (?, ?, ?, ?)");
-                    $stmt->bind_param("iiii", $userId, $gameType, $score, $win);
-                    $stmt->execute();
                     $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
                     $stmt->bind_param("iiii", $score, $win, $score, $userId);
                     $stmt->execute();
+                    $conn->commit();
+                    $debugMessages[] = "Đã cập nhật bảng user";
                 } catch (Exception $e) {
-                    error_log("Lỗi lưu lịch sử game: " . $e->getMessage());
-                    sendResponse(['error' => 'Lỗi lưu lịch sử game'], 500);
+                    $debugMessages[] = "Lỗi cập nhật điểm: " . $e->getMessage() . " | SQL Error: " . $conn->error;
+                    sendResponse(['error' => 'Lỗi cập nhật điểm: ' . $e->getMessage()], 500);
                 }
+            } else {
+                $debugMessages[] = "Người dùng chưa đăng nhập, không lưu điểm.";
             }
         } else {
             $game['currentPlayer'] = $symbol === 'X' ? 'O' : 'X';
@@ -95,16 +97,17 @@ if ($action === 'move') {
                         $computerResult = 'WIN';
                         if (isset($_SESSION['user'])) {
                             $userId = $_SESSION['user']['ID'];
-                            $gameType = 1;
+                            $score = 0; // Không cộng điểm khi thua
                             $win = 0;
-                            $score = 0;
                             try {
-                                $stmt = $conn->prepare("INSERT INTO gamehistory (userId, gameID, score, win) VALUES (?, ?, ?, ?)");
-                                $stmt->bind_param("iiii", $userId, $gameType, $score, $win);
+                                $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
+                                $stmt->bind_param("iiii", $score, $win, $score, $userId);
                                 $stmt->execute();
+                                $conn->commit();
+                                error_log("Đã cập nhật bảng user (máy thắng)");
                             } catch (Exception $e) {
-                                error_log("Lỗi lưu lịch sử game: " . $e->getMessage());
-                                sendResponse(['error' => 'Lỗi lưu lịch sử game'], 500);
+                                error_log("Lỗi cập nhật điểm: " . $e->getMessage());
+                                sendResponse(['error' => 'Lỗi cập nhật điểm'], 500);
                             }
                         }
                     } else {
@@ -131,19 +134,17 @@ if ($action === 'move') {
             $result = 'DRAW';
             if (isset($_SESSION['user'])) {
                 $userId = $_SESSION['user']['ID'];
-                $gameType = 1;
+                $score = 5; // Cộng 5 điểm khi hòa
                 $win = 0;
-                $score = 5;
                 try {
-                    $stmt = $conn->prepare("INSERT INTO gamehistory (userId, gameID, score, win) VALUES (?, ?, ?, ?)");
-                    $stmt->bind_param("iiii", $userId, $gameType, $score, $win);
+                    $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
+                    $stmt->bind_param("iiii", $score, $win, $score, $userId);
                     $stmt->execute();
-                    $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumScore = sumScore + ? WHERE ID = ?");
-                    $stmt->bind_param("iii", $score, $score, $userId);
-                    $stmt->execute();
+                    $conn->commit();
+                    error_log("Đã cập nhật bảng user (hòa)");
                 } catch (Exception $e) {
-                    error_log("Lỗi lưu lịch sử game: " . $e->getMessage());
-                    sendResponse(['error' => 'Lỗi lưu lịch sử game'], 500);
+                    error_log("Lỗi cập nhật điểm: " . $e->getMessage());
+                    sendResponse(['error' => 'Lỗi cập nhật điểm'], 500);
                 }
             }
         }
@@ -154,7 +155,8 @@ if ($action === 'move') {
             'currentPlayer' => $game['currentPlayer'],
             'computerMove' => $computerMove,
             'computerResult' => $computerResult,
-            'winningCells' => $winningCells
+            'winningCells' => $winningCells,
+            'debug' => $debugMessages
         ]);
     }
 } elseif ($action === 'surrender') {
@@ -164,16 +166,17 @@ if ($action === 'move') {
         $game['winner'] = $data['symbol'] === 'X' ? 'O' : 'X';
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']['ID'];
-            $gameType = 1;
+            $score = 0; // Không cộng điểm khi đầu hàng
             $win = 0;
-            $score = 0;
             try {
-                $stmt = $conn->prepare("INSERT INTO gamehistory (userId, gameID, score, win) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("iiii", $userId, $gameType, $score, $win);
+                $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
+                $stmt->bind_param("iiii", $score, $win, $score, $userId);
                 $stmt->execute();
+                $conn->commit();
+                error_log("Đã cập nhật bảng user (đầu hàng)");
             } catch (Exception $e) {
-                error_log("Lỗi lưu lịch sử game: " . $e->getMessage());
-                sendResponse(['error' => 'Lỗi lưu lịch sử game'], 500);
+                error_log("Lỗi cập nhật điểm: " . $e->getMessage());
+                sendResponse(['error' => 'Lỗi cập nhật điểm'], 500);
             }
         }
         sendResponse([
