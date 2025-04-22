@@ -6,6 +6,7 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
+require dirname(__DIR__) . '/includes/database.php';
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 class CaroWebSocket implements MessageComponentInterface
@@ -140,6 +141,7 @@ class CaroWebSocket implements MessageComponentInterface
         $game['player2']->send(json_encode($message));
 
         if ($isWin || $isDraw) {
+            $this->updateGameResult($game, $isWin, $symbol); // Thêm dòng này
             unset($this->games[$gameId]);
         }
     }
@@ -240,7 +242,50 @@ class CaroWebSocket implements MessageComponentInterface
         }
         return [];
     }
+    protected function updateGameResult($game, $isWin, $symbol)
+    {
+        if ($isWin) {
+            $winner = ($symbol === 'X') ? $game['player1'] : $game['player2'];
+            $loser = ($symbol === 'X') ? $game['player2'] : $game['player1'];
 
+            if (isset($winner->userData['userId'])) {
+                $this->updateScore($winner->userData['userId'], 5, 1); // +5 điểm, +1 win
+            }
+            if (isset($loser->userData['userId'])) {
+                $this->updateScore($loser->userData['userId'], 0, 0); // Không cộng điểm
+            }
+        } else {
+            // Hòa
+            if (isset($game['player1']->userData['userId'])) {
+                $this->updateScore($game['player1']->userData['userId'], 2, 0); // +2 điểm
+            }
+            if (isset($game['player2']->userData['userId'])) {
+                $this->updateScore($game['player2']->userData['userId'], 2, 0); // +2 điểm
+            }
+        }
+    }
+    protected function updateScore($userId, $score, $win)
+    {
+        try {
+            $host = $_ENV['DB_SERVER'];
+            $dbname = $_ENV['DB_NAME'];
+            $username = $_ENV['DB_USER'];
+            $password = $_ENV['DB_PASS'];
+
+            $conn = new mysqli($host, $username, $password, $dbname);
+            if ($conn->connect_error) {
+                error_log("Database connection failed: " . $conn->connect_error);
+                return;
+            }
+
+            $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
+            $stmt->bind_param("iiii", $score, $win, $score, $userId);
+            $stmt->execute();
+            $conn->close();
+        } catch (Exception $e) {
+            error_log("Error updating score: " . $e->getMessage());
+        }
+    }
     protected function isBoardFull($board)
     {
         foreach ($board as $row) {
