@@ -72,16 +72,6 @@ require_once(__DIR__ . '/../bootstrap.php');
     </main>
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
-    <!-- 
-    <script>
-        // JavaScript để xử lý lượt người chơi (nếu cần)
-        document.querySelectorAll('.game-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const gameId = item.getAttribute('data-id');
-                console.log(`Đã chọn game: ${gameId}`);
-            });
-        });
-    </script> -->
 </body>
 
 </html>
