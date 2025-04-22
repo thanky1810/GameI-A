@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../game/CaroGame.php';
+
 header('Content-Type: application/json');
 
 // Tắt hiển thị lỗi và ghi lỗi vào log
@@ -70,14 +71,24 @@ if ($action === 'move') {
                 $win = 1;
                 $debugMessages[] = "Người dùng ID: $userId, Điểm sẽ cộng: $score";
                 try {
+                    // Bắt đầu transaction
+                    $conn->begin_transaction();
+
                     $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
                     $stmt->bind_param("iiii", $score, $win, $score, $userId);
-                    $stmt->execute();
-                    $conn->commit();
-                    $debugMessages[] = "Đã cập nhật bảng user";
+                    $result_execute = $stmt->execute();
+
+                    if ($result_execute) {
+                        $conn->commit();
+                        $debugMessages[] = "Đã cập nhật bảng user: Rows affected: " . $stmt->affected_rows;
+                    } else {
+                        $conn->rollback();
+                        $debugMessages[] = "Lỗi khi thực hiện lệnh: " . $stmt->error;
+                    }
                 } catch (Exception $e) {
+                    $conn->rollback();
                     $debugMessages[] = "Lỗi cập nhật điểm: " . $e->getMessage() . " | SQL Error: " . $conn->error;
-                    sendResponse(['error' => 'Lỗi cập nhật điểm: ' . $e->getMessage()], 500);
+                    error_log("Lỗi cập nhật điểm: " . $e->getMessage());
                 }
             } else {
                 $debugMessages[] = "Người dùng chưa đăng nhập, không lưu điểm.";
