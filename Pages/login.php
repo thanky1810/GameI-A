@@ -77,6 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Đăng nhập thành công
                 $_SESSION['user'] = $userName;
                 $_SESSION['ID'] = $row['ID'];
+                $_SESSION['userId'] = $row['ID'];
+                $_SESSION['username'] = $userName;
+
                 header("Location: home.php");
                 exit();
             } else {

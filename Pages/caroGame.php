@@ -32,6 +32,11 @@ require_once(__DIR__ . '/../bootstrap.php');
     <script src="/Project/assets/js/caro-game.js"></script>
     <script src="/Project/assets/js/caro-ui.js"></script>
     <script>
+        const userData = <?php echo json_encode($_SESSION['user'] ?? null); ?>;
+        if (userData) {
+            localStorage.setItem('userId', userData.ID);
+            localStorage.setItem('username', userData.Username);
+        }
         // Logic đếm thời gian
         let seconds = 0;
         const timerElement = document.getElementById('timer');

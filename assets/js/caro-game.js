@@ -31,7 +31,9 @@ class CaroGame {
     initSocket() {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const host = window.location.hostname;
-        const wsUrl = `${protocol}//${host}:8080`;
+        const userId = localStorage.getItem('userId') || 'guest';
+        const username = localStorage.getItem('username') || 'Guest';
+        const wsUrl = `${protocol}//${host}:8080?userId=${userId}&username=${username}`;
         this.connectWebSocket(wsUrl);
     }
 
