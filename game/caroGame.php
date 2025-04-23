@@ -9,6 +9,8 @@ class CaroGame
         // Constructor
     }
 
+
+    
     /**
      * Kiểm tra thắng/thua
      */

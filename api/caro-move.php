@@ -10,6 +10,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', 'D:/App/XAMPP/logs/php_error_log');
 
+
 // Hàm trả về JSON và thoát
 function sendResponse($data, $statusCode = 200)
 {
@@ -69,26 +70,29 @@ if ($action === 'move') {
                 $userId = $_SESSION['user']['ID'];
                 $score = 5; // Cộng 5 điểm khi thắng
                 $win = 1;
-                $debugMessages[] = "Người dùng ID: $userId, Điểm sẽ cộng: $score";
+
                 try {
-                    // Bắt đầu transaction
                     $conn->begin_transaction();
 
+                    // Cập nhật điểm
                     $stmt = $conn->prepare("UPDATE user SET Score = Score + ?, sumWin = sumWin + ?, sumScore = sumScore + ? WHERE ID = ?");
                     $stmt->bind_param("iiii", $score, $win, $score, $userId);
-                    $result_execute = $stmt->execute();
 
-                    if ($result_execute) {
-                        $conn->commit();
-                        $debugMessages[] = "Đã cập nhật bảng user: Rows affected: " . $stmt->affected_rows;
-                    } else {
-                        $conn->rollback();
-                        $debugMessages[] = "Lỗi khi thực hiện lệnh: " . $stmt->error;
+                    if (!$stmt->execute()) {
+                        throw new Exception("Execute failed: " . $stmt->error);
                     }
+
+                    // Kiểm tra có cập nhật được không
+                    if ($stmt->affected_rows === 0) {
+                        throw new Exception("No rows affected - user may not exist");
+                    }
+
+                    $conn->commit();
+                    $debugMessages[] = "Đã cập nhật điểm thành công";
                 } catch (Exception $e) {
                     $conn->rollback();
-                    $debugMessages[] = "Lỗi cập nhật điểm: " . $e->getMessage() . " | SQL Error: " . $conn->error;
-                    error_log("Lỗi cập nhật điểm: " . $e->getMessage());
+                    $debugMessages[] = "Lỗi database: " . $e->getMessage();
+                    error_log("Database error: " . $e->getMessage());
                 }
             } else {
                 $debugMessages[] = "Người dùng chưa đăng nhập, không lưu điểm.";
