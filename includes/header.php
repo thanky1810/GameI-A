@@ -29,7 +29,7 @@ if (session_status() === PHP_SESSION_NONE) {
             echo '
                     <div class="user-info">
                         <div class="user-avatar">
-                            <img src=" ' . asset('img/5.jpg') . '" alt="User Avatar">
+                           <img src="../' . htmlspecialchars($userName["avatar"] ?? "assets/img/5.jpg") . '" alt="Avatar">
                             </div>
                             <span id="user-top-name">' . $userName['Username'] . '</span>
                             <div class="menu-toggle" id="menuToggle">☰</div>
