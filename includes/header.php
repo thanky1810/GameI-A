@@ -2,6 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once(__DIR__ . '/../includes/functions.php');
+require_once(__DIR__ . '/../bootstrap.php');
+$conn = mysqli_connect("localhost", "root", "", "game-a");
 ?>
 <link rel="stylesheet" href="<?= asset('css/caro.css') ?>">
 <link rel="stylesheet" href="<?= asset('css/header.css') ?>">
@@ -22,22 +25,29 @@ if (session_status() === PHP_SESSION_NONE) {
             header("Location: " . getCorrectUrl('Pages/home.php'));
             exit();
         }
+
+        // Kiểm tra tồn tại session["user"] trước khi gán biến
         if (!isset($_SESSION["user"])) {
             echo '<a href="' . getCorrectUrl('Pages/login.php') . '">🔑 Đăng nhập</a>';
         } else {
             $userName = $_SESSION["user"];
+            $un = $userName['ID'];
+            $qr = mysqli_query($conn, "SELECT avatar FROM user 
+                    WHERE ID = $un");
+            $row = mysqli_fetch_assoc($qr);
+            $avatarPath = !empty($userName["avatar"]) ? htmlspecialchars($userName["avatar"]) : "assets/img/5.jpg";
             echo '
-                    <div class="user-info">
-                        <div class="user-avatar">
-                           <img src="../' . htmlspecialchars($userName["avatar"] ?? "assets/img/5.jpg") . '" alt="Avatar">
-                            </div>
-                            <span id="user-top-name">' . $userName['Username'] . '</span>
-                            <div class="menu-toggle" id="menuToggle">☰</div>
-                            <div class="dropdown-menu" id="dropdownMenu">
-                                <a href="' . getCorrectUrl('Pages/account.php') . '">Profile</a>
-                                <a href="?logout=true">Đăng xuất</a>
-                            </div>
-                        </div> ';
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <img src="../' . $row['avatar'] . '" alt="Avatar">
+                    </div>
+                    <span id="user-top-name">' . htmlspecialchars($userName['Username']) . '</span>
+                    <div class="menu-toggle" id="menuToggle">☰</div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="' . getCorrectUrl('Pages/account.php') . '">Profile</a>
+                        <a href="?logout=true">Đăng xuất' . $userName['ID'] . '</a>
+                    </div>
+                </div>';
         }
         ?>
     </div>

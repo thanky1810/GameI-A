@@ -132,7 +132,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <section id="account-info">
             <div class="account-header">
                 <div class="avatar">
-                    <img src="../<?php echo htmlspecialchars($userName["avatar"] ?? "assets/img/5.jpg"); ?>" alt="Avatar">
+                    <?php
+                    $id = $userName["ID"];
+                    $rs = mysqli_query($conn, "SELECT * FROM user WHERE ID = $id");
+                    $row = mysqli_fetch_assoc($rs);
+                    ?>
+                    <img src="../<?php echo $row['avatar']; ?>" alt="Avatar">
                     <form method="POST" enctype="multipart/form-data" class="edit-avatar">
                         <label for="avatarInput">
                             <img src="../assets/img/edit-icon.png" alt="Edit" width="20">
@@ -156,11 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </div>
 
-            <?php
-            $id = $userName["ID"];
-            $rs = mysqli_query($conn, "SELECT * FROM user WHERE ID = $id");
-            $row = mysqli_fetch_assoc($rs);
-            ?>
+
 
             <div class="stats">
                 <h3>SỐ LIỆU THỐNG KÊ</h3>
@@ -173,6 +174,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </section>
     </main>
+
+
 
     <?php include "../includes/footer.php"; ?>
 
