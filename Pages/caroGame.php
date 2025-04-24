@@ -33,9 +33,13 @@ require_once(__DIR__ . '/../bootstrap.php');
     <script src="/Project/assets/js/caro-ui.js"></script>
     <script>
         const userData = <?php echo json_encode($_SESSION['user'] ?? null); ?>;
-        if (userData) {
-            localStorage.setItem('userId', userData.ID);
-            localStorage.setItem('username', userData.Username);
+        const sessionId = '<?php echo session_id(); ?>'; // Lấy ID phiên
+        if (userData && typeof userData === 'object' && 'ID' in userData && 'Username' in userData) {
+            localStorage.setItem('userId', userData.ID || '');
+            localStorage.setItem('username', userData.Username || '');
+            localStorage.setItem('sessionId', sessionId); // Lưu ID phiên vào localStorage
+        } else {
+            console.error('Dữ liệu người dùng không hợp lệ:', userData);
         }
         // Logic đếm thời gian
         let seconds = 0;

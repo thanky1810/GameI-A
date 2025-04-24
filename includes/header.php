@@ -31,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <div class="user-avatar">
                             <img src=" ' . asset('img/5.jpg') . '" alt="User Avatar">
                             </div>
-                            <span id="user-top-name">' . $userName . '</span>
+                            <span id="user-top-name">' . $userName['Username'] . '</span>
                             <div class="menu-toggle" id="menuToggle">☰</div>
                             <div class="dropdown-menu" id="dropdownMenu">
                                 <a href="' . getCorrectUrl('Pages/account.php') . '">Profile</a>

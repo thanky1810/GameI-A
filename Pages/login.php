@@ -75,11 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // So sánh mật khẩu nhập vào với mật khẩu trong CSDL
             if (password_verify($password, $hashedPassword)) {
                 // Đăng nhập thành công
-                $_SESSION['user'] = $userName;
-                $_SESSION['ID'] = $row['ID'];
-                $_SESSION['userId'] = $row['ID'];
-                $_SESSION['username'] = $userName;
-
+                $_SESSION['user'] = [
+                    'ID' => $row['ID'],
+                    'Username' => $userName
+                ];
                 header("Location: home.php");
                 exit();
             } else {
