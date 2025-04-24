@@ -22,20 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Dữ liệu bảng kỷ lục mẫu
-    const leaderboardData = [
-        { name: "guest0452", time: "0.01 giây" },
-        { name: "guest0563", time: "0.01 giây" },
-        { name: "guest0123", time: "0.01 giây" },
-        { name: "guest0459", time: "0.02 giây" },
-        { name: "guest0573", time: "0.02 giây" },
-        { name: "guest0132", time: "0.02 giây" },
-        { name: "guest0401", time: "0.02 giây" },
-        { name: "guest0324", time: "0.03 giây" },
-        { name: "guest0456", time: "0.03 giây" },
-        { name: "guest0823", time: "0.03 giây" },
-        { name: "guest0999", time: "0.03 giây" },
-        { name: "guest0712", time: "0.04 giây" }
-    ];
 
     // Hiển thị bảng kỷ lục
     const leaderboardList = document.getElementById("leaderboard-list");
