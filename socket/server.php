@@ -480,5 +480,4 @@ $server = IoServer::factory(
     '0.0.0.0'
 );
 
-echo "WebSocket server running on ws://0.0.0.0:8080\n";
 $server->run();
