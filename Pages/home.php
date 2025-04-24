@@ -52,7 +52,7 @@ require_once(__DIR__ . '/../bootstrap.php');
                     <a href="<?= htmlspecialchars(logining(getCorrectUrl('Pages/min.php'))) ?>">
                         <div class="overlay">
                             <p class="players">👥 <span id="count-minesweeper">19</span> người chơi</p>
-                            <button class="play-button">🎮 Chơi Game</button>
+                            <button class="play-button">🎮 Chơi Game</button    >
                         </div>
                     </a>
                 </div>

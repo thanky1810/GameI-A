@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../assets/css/footer.css">
+<link rel="stylesheet" href="<?= asset('css/footer.css') ?>">
 <footer>
         <p>Địa chỉ: 32 Bắc Ái, Định Thọ, TP. Thủ Đức.</p>
         <p>Điện thoại: 0902 520 536.</p>
