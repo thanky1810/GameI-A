@@ -6,6 +6,7 @@ if (!isset($_SESSION["user"])) {
 }
 require_once(__DIR__ . '/../includes/functions.php');
 require_once(__DIR__ . '/../bootstrap.php');
+include("../includes/database.php");
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +56,26 @@ require_once(__DIR__ . '/../bootstrap.php');
         </div>
 
         <h2>Bảng kỷ lục</h2>
+        <?php
+
+        $qr = "SELECT * FROM user 
+                    ORDER BY Score DESC";
+
+        $kq = mysqli_query($conn, $qr);
+
+        ?>
+
+
         <div class="leaderboard">
-            <ul id="leaderboard-list"></ul>
+            <ul id="leaderboard-list">
+                <?php
+                while ($d = mysqli_fetch_array($kq)) {
+                ?>
+                    <li><?= $d['userName']; ?> <span><?= $d['Score']; ?>đ</span></li>
+                <?php
+                }
+                ?>
+            </ul>
         </div>
 
         <!-- Modal chọn chế độ chơi -->
