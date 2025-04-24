@@ -33,6 +33,7 @@ class CaroGame {
         const host = window.location.hostname;
         const userId = localStorage.getItem('userId') || 'guest';
         const username = localStorage.getItem('username') || 'Guest';
+        const sessionId = localStorage.getItem('sessionId') || '';
         const wsUrl = `${protocol}//${host}:8080?userId=${userId}&username=${username}`;
         this.connectWebSocket(wsUrl);
     }

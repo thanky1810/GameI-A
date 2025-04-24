@@ -44,12 +44,33 @@ class CaroWebSocket implements MessageComponentInterface
             return;
         }
 
-        $this->clients->attach($conn);
-        $conn->userData = [
-            'userId' => $query['userId'],
-            'username' => $query['username'] ?? 'Anonymous_' . $conn->resourceId
-        ];
+        // Tải phiên bằng sessionId
+        if (!empty($query['sessionId'])) {
+            session_id($query['sessionId']); // Thiết lập ID phiên
+            session_start(); // Bắt đầu phiên với ID này
+            if (isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['ID'])) {
+                $conn->userData = [
+                    'userId' => $_SESSION['user']['ID'],
+                    'username' => $_SESSION['user']['Username'] ?? 'Anonymous_' . $conn->resourceId
+                ];
+                echo "Session loaded with ID: " . $query['sessionId'] . "\n";
+                echo "User data from session: " . print_r($_SESSION['user'], true) . "\n";
+            } else {
+                echo "Invalid session data for sessionId: " . $query['sessionId'] . "\n";
+                $conn->userData = [
+                    'userId' => $query['userId'],
+                    'username' => $query['username'] ?? 'Anonymous_' . $conn->resourceId
+                ];
+            }
+        } else {
+            echo "No sessionId provided, using query parameters\n";
+            $conn->userData = [
+                'userId' => $query['userId'],
+                'username' => $query['username'] ?? 'Anonymous_' . $conn->resourceId
+            ];
+        }
 
+        $this->clients->attach($conn);
         echo "New authenticated connection! ({$conn->resourceId}) User: {$conn->userData['userId']}\n";
     }
 
@@ -358,9 +379,9 @@ class CaroWebSocket implements MessageComponentInterface
             return;
         }
 
-        try {
-            echo "Updating score for user {$userId}: +{$score} points, +{$win} wins\n";
+        echo "Attempting to update score for userId: $userId\n";
 
+        try {
             $host = $_ENV['DB_SERVER'];
             $dbname = $_ENV['DB_NAME'];
             $username = $_ENV['DB_USER'];
@@ -373,13 +394,10 @@ class CaroWebSocket implements MessageComponentInterface
             }
 
             $query = "UPDATE user SET 
-                      Score = Score + ?, 
-                      sumWin = sumWin + ?, 
-                      sumScore = sumScore + ? 
-                      WHERE ID = ?";
-
-            echo "Executing query: {$query} with params: {$score}, {$win}, {$score}, {$userId}\n";
-
+                  Score = Score + ?, 
+                  sumWin = sumWin + ?, 
+                  sumScore = sumScore + ? 
+                  WHERE ID = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("iiii", $score, $win, $score, $userId);
             $stmt->execute();
@@ -389,7 +407,7 @@ class CaroWebSocket implements MessageComponentInterface
             $stmt->close();
             $conn->close();
 
-            echo "Score updated successfully for user {$userId}\n";
+            echo "Score updated successfully for user $userId\n";
         } catch (Exception $e) {
             echo "Error updating score: " . $e->getMessage() . "\n";
         }
