@@ -22,6 +22,10 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
         if (isset($_GET['logout'])) {
             session_unset();
             session_destroy();
+
+            setcookie("remember_user", "", time() - 3600, "/");
+            setcookie("remember_pass", "", time() - 3600, "/");
+
             header("Location: " . getCorrectUrl('Pages/home.php'));
             exit();
         }
