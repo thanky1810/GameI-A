@@ -1,7 +1,29 @@
 <?php
 session_start();
 include "../includes/database.php";
-// Hàm tạo tên không trùng lặp
+
+// ✅ Tự động đăng nhập nếu có cookie và chưa có session
+if (!isset($_SESSION['user']) && isset($_COOKIE['remember_user']) && isset($_COOKIE['remember_pass'])) {
+    $cookieUser = $_COOKIE['remember_user'];
+    $cookiePass = $_COOKIE['remember_pass'];
+
+    $sql = "SELECT * FROM user WHERE userName = '$cookieUser'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        if ($cookiePass === $row['password']) {
+            $_SESSION['user'] = [
+                'ID' => $row['ID'],
+                'Username' => $cookieUser
+            ];
+            header("Location: home.php");
+            exit();
+        }
+    }
+}
+
+// ✅ Hàm tạo tên không trùng lặp
 function randomName($conn)
 {
     do {
@@ -14,85 +36,76 @@ function randomName($conn)
     return $name;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!$conn) {
-        die("Lỗi kết nối MySQL: " . mysqli_connect_error());
-    }
+// ✅ Xử lý Đăng ký
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register-submit'])) {
+    $userName = filter_input(INPUT_POST, "register-userName", FILTER_SANITIZE_SPECIAL_CHARS);
+    $password = $_POST['register-password'];
+    $confirmPassword = $_POST['register-confirm-password'];
 
-    // Kiểm tra nếu là đăng ký
-    if (isset($_POST['register-submit'])) {
-        $userName = filter_input(INPUT_POST, "register-userName", FILTER_SANITIZE_SPECIAL_CHARS);
-        $password = $_POST['register-password'];
-        $confirmPassword = $_POST['register-confirm-password'];
-
-        // Kiểm tra mật khẩu có trùng nhau không
-        if ($password !== $confirmPassword) {
-            echo "Mật khẩu không khớp! Vui lòng nhập lại.";
-        } else {
-            // Kiểm tra xem tên đăng nhập đã tồn tại chưa
-            $sql = "SELECT * FROM user WHERE userName = '$userName'";
-            $result = mysqli_query($conn, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                echo "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.";
-            } else {
-                // Mã hóa mật khẩu trước khi lưu vào database
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $name = randomName($conn);
-                $userRole = "user";
-
-                // Thêm người dùng vào database
-                $sql = "INSERT INTO user (userName, password, role, name) VALUES ('$userName', '$hashedPassword', '$userRole', '$name')";
-                if (mysqli_query($conn, $sql)) {
-                    echo "Đăng ký thành công!";
-                    header('Location: home.php');
-                    $_SESSION['user'] = [
-                        'ID' => $row['ID'],
-                        'Username' => $userName
-                    ];
-                    exit();
-                } else {
-                    echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
-                }
-            }
-        }
-    }
-}
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['login-submit'])) {
-        // Lấy dữ liệu từ form
-        $userName = filter_input(INPUT_POST, "login-userName", FILTER_SANITIZE_SPECIAL_CHARS);
-        $password = $_POST['login-password'];
-
-        // Kiểm tra xem tài khoản có tồn tại không
+    if ($password !== $confirmPassword) {
+        echo "Mật khẩu không khớp! Vui lòng nhập lại.";
+    } else {
         $sql = "SELECT * FROM user WHERE userName = '$userName'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $hashedPassword = $row['password']; // Mật khẩu đã hash trong CSDL
+            echo "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.";
+        } else {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $name = randomName($conn);
+            $userRole = "user";
 
-            // So sánh mật khẩu nhập vào với mật khẩu trong CSDL
-            if (password_verify($password, $hashedPassword)) {
-                // Đăng nhập thành công
+            $sql = "INSERT INTO user (userName, password, role, name) 
+                    VALUES ('$userName', '$hashedPassword', '$userRole', '$name')";
+            if (mysqli_query($conn, $sql)) {
+                $newID = mysqli_insert_id($conn);
                 $_SESSION['user'] = [
-                    'ID' => $row['ID'],
+                    'ID' => $newID,
                     'Username' => $userName
                 ];
-                header("Location: home.php");
+                header('Location: home.php');
                 exit();
             } else {
-                $error = "Mật khẩu không đúng!";
+                echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
             }
-        } else {
-            $error = "Tên đăng nhập không tồn tại!";
         }
     }
 }
-?>
 
+// ✅ Xử lý Đăng nhập
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
+    $userName = filter_input(INPUT_POST, "login-userName", FILTER_SANITIZE_SPECIAL_CHARS);
+    $password = $_POST['login-password'];
+
+    $sql = "SELECT * FROM user WHERE userName = '$userName'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $hashedPassword = $row['password'];
+
+        if (password_verify($password, $hashedPassword)) {
+            $_SESSION['user'] = [
+                'ID' => $row['ID'],
+                'Username' => $userName
+            ];
+
+            // ✅ Nếu chọn Remember me -> lưu cookie trong 1 ngày
+            if (isset($_POST['remember'])) {
+                setcookie("remember_user", $userName, time() + 86400, "/");
+                setcookie("remember_pass", $row['password'], time() + 86400, "/");
+            }
+
+            header("Location: home.php");
+            exit();
+        } else {
+            $error = "Mật khẩu không đúng!";
+        }
+    } else {
+        $error = "Tên đăng nhập không tồn tại!";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -107,12 +120,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="background">
         <button class="home-btn" onclick="location.href='Home.php'">Home</button>
-
         <div class="container">
             <div class="form-box">
                 <h2 id="form-title">Log in</h2>
 
-                <!-- Form Đăng nhập -->
+                <!-- ✅ Form Đăng nhập -->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="login-form" method="post">
                     <div class="form-group">
                         <input name="login-userName" type="text" id="login-username" class="input-field" required>
@@ -122,15 +134,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input name="login-password" type="password" id="login-password" class="input-field" required>
                         <label class="label" for="login-password">Password</label>
                     </div>
+                    <div class="form-group remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me (1 ngày)</label>
+                    </div>
                     <button name="login-submit" type="submit" class="btn">Log in</button>
                     <p>Don't have an account? <a href="#" id="switch-to-register">Signup</a></p>
                 </form>
 
-                <!-- Form Đăng ký -->
+                <!-- ✅ Form Đăng ký -->
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="register-form" style="display: none;" method="post">
                     <div class="form-group">
                         <input name="register-userName" type="text" id="register-username" class="input-field" required>
-                        <label class="label" for="register-userName">Username</label>
+                        <label class="label" for="register-username">Username</label>
                     </div>
                     <div class="form-group">
                         <input name="register-password" type="password" id="register-password" class="input-field" required>
@@ -146,7 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-
     <script src="../assets/js/login.js"></script>
 </body>
 
