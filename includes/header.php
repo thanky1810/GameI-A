@@ -32,7 +32,7 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
         } else {
             $userName = $_SESSION["user"];
             $un = $userName['ID'];
-            $qr = mysqli_query($conn, "SELECT avatar FROM user 
+            $qr = mysqli_query($conn, "SELECT * FROM user 
                     WHERE ID = $un");
             $row = mysqli_fetch_assoc($qr);
             $avatarPath = !empty($userName["avatar"]) ? htmlspecialchars($userName["avatar"]) : "assets/img/5.jpg";
@@ -41,7 +41,7 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
                     <div class="user-avatar">
                         <img src="../' . $row['avatar'] . '" alt="Avatar">
                     </div>
-                    <span id="user-top-name">' . htmlspecialchars($userName['Username']) . '</span>
+                    <span id="user-top-name">' . $row['userName'] . '</span>
                     <div class="menu-toggle" id="menuToggle">☰</div>
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="' . getCorrectUrl('Pages/account.php') . '">Profile</a>
