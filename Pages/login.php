@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
                     </div>
                     <div class="form-group remember-me">
                         <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember me (1 ngày)</label>
+                        <label for="remember">Remember me</label>
                     </div>
                     <button name="login-submit" type="submit" class="btn">Log in</button>
                     <p>Don't have an account? <a href="#" id="switch-to-register">Signup</a></p>
