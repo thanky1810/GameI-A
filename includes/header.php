@@ -9,7 +9,6 @@ require_once(__DIR__ . '/../bootstrap.php');
 $conn = mysqli_connect("localhost", "root", "", "game-a");
 ?>
 
-<link rel="stylesheet" href="<?= asset('css/caro.css') ?>">
 <link rel="stylesheet" href="<?= asset('css/header.css') ?>">
 <link rel="stylesheet" href="<?= asset('css/main.css') ?>">
 
