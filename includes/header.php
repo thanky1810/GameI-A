@@ -59,7 +59,6 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
                 echo '<a href="' . getCorrectUrl('Pages/admin.php') . '">⚙️ Manage</a>';
             } else {
                 echo '<a href="' . getCorrectUrl('Pages/account.php') . '">👤 Profile</a>';
-                echo  $_SESSION['user']['Role'];
             }
 
             echo '<a href="?logout=true">🚪 Đăng xuất</a>
