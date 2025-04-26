@@ -49,7 +49,7 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
                     <div class="menu-toggle" id="menuToggle">☰</div>
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="' . getCorrectUrl('Pages/account.php') . '">Profile</a>
-                        <a href="?logout=true">Đăng xuất' . $userName['ID'] . '</a>
+                        <a href="?logout=true">Đăng xuất</a>
                     </div>
                 </div>';
         }
