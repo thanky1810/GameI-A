@@ -2,7 +2,7 @@
 session_start();
 include "../includes/database.php";
 
-// ✅ Tự động đăng nhập nếu có cookie và chưa có session
+// Tự động đăng nhập nếu có cookie và chưa có session
 if (!isset($_SESSION['user']) && isset($_COOKIE['remember_user']) && isset($_COOKIE['remember_pass'])) {
     $cookieUser = $_COOKIE['remember_user'];
     $cookiePass = $_COOKIE['remember_pass'];
@@ -24,7 +24,7 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_user']) && isset($_COO
     }
 }
 
-// ✅ Hàm tạo tên không trùng lặp
+// Hàm tạo tên không trùng lặp
 function randomName($conn)
 {
     do {
@@ -37,20 +37,24 @@ function randomName($conn)
     return $name;
 }
 
-// ✅ Xử lý Đăng ký
+// Xử lý Đăng ký
+$register_error = '';
+$show_register_form = false; // Biến để kiểm soát hiển thị form đăng ký
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register-submit'])) {
     $userName = filter_input(INPUT_POST, "register-userName", FILTER_SANITIZE_SPECIAL_CHARS);
     $password = $_POST['register-password'];
     $confirmPassword = $_POST['register-confirm-password'];
 
     if ($password !== $confirmPassword) {
-        echo "Mật khẩu không khớp! Vui lòng nhập lại.";
+        $register_error = "Mật khẩu không khớp! Vui lòng nhập lại.";
+        $show_register_form = true;
     } else {
         $sql = "SELECT * FROM user WHERE userName = '$userName'";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {
-            echo "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.";
+            $register_error = "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.";
+            $show_register_form = true;
         } else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $name = randomName($conn);
@@ -68,13 +72,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register-submit'])) {
                 header('Location: home.php');
                 exit();
             } else {
-                echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
+                $register_error = "Lỗi: " . mysqli_error($conn);
+                $show_register_form = true;
             }
         }
     }
 }
 
-// ✅ Xử lý Đăng nhập
+// Xử lý Đăng nhập
+$login_error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
     $userName = filter_input(INPUT_POST, "login-userName", FILTER_SANITIZE_SPECIAL_CHARS);
     $password = $_POST['login-password'];
@@ -90,16 +96,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
             $_SESSION['user'] = [
                 'ID' => $row['ID'],
                 'Username' => $userName,
-                'Role' => $row['role'] // <-- sửa ở đây
+                'Role' => $row['role']
             ];
 
-            // ✅ Nếu chọn Remember me -> lưu cookie trong 1 ngày
             if (isset($_POST['remember'])) {
                 setcookie("remember_user", $userName, time() + 86400, "/");
                 setcookie("remember_pass", $row['password'], time() + 86400, "/");
             }
 
-            // ✅ Chuyển trang tùy theo role
             if ($row['role'] === 'admin') {
                 header("Location: admin.php");
             } else {
@@ -107,10 +111,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
             }
             exit();
         } else {
-            $error = "Mật khẩu không đúng!";
+            $login_error = "Tài khoản hoặc mật khẩu không đúng!";
         }
     } else {
-        $error = "Tên đăng nhập không tồn tại!";
+        $login_error = "Tên đăng nhập không tồn tại!";
     }
 }
 ?>
@@ -130,10 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
         <button class="home-btn" onclick="location.href='Home.php'">Home</button>
         <div class="container">
             <div class="form-box">
-                <h2 id="form-title">Log in</h2>
+                <h2 id="form-title"><?php echo $show_register_form ? 'Sign up' : 'Log in'; ?></h2>
 
-                <!-- ✅ Form Đăng nhập -->
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="login-form" method="post">
+                <!-- Form Đăng nhập -->
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="login-form" method="post" style="<?php echo $show_register_form ? 'display: none;' : 'display: block;'; ?>">
+                    <div class="error-message" id="login-error"><?php echo $login_error; ?></div>
                     <div class="form-group">
                         <input name="login-userName" type="text" id="login-username" class="input-field" required>
                         <label class="label" for="login-username">Username</label>
@@ -150,8 +155,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
                     <p>Don't have an account? <a href="#" id="switch-to-register">Signup</a></p>
                 </form>
 
-                <!-- ✅ Form Đăng ký -->
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="register-form" style="display: none;" method="post">
+                <!-- Form Đăng ký -->
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="register-form" method="post" style="<?php echo $show_register_form ? 'display: block;' : 'display: none;'; ?>">
+                    <div class="error-message" id="register-error"><?php echo $register_error; ?></div>
                     <div class="form-group">
                         <input name="register-userName" type="text" id="register-username" class="input-field" required>
                         <label class="label" for="register-username">Username</label>

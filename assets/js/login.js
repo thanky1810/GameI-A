@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const switchToRegister = document.getElementById("switch-to-register");
     const switchToLogin = document.getElementById("switch-to-login");
     const formTitle = document.getElementById("form-title");
+    const loginError = document.getElementById("login-error");
+    const registerError = document.getElementById("register-error");
+
+    // Hiển thị thông báo lỗi nếu có từ PHP
+    if (loginError.textContent.trim() !== "") {
+        loginError.classList.add("active");
+    }
+    if (registerError.textContent.trim() !== "") {
+        registerError.classList.add("active");
+    }
 
     // Chuyển sang form đăng ký
     switchToRegister.addEventListener("click", (e) => {
@@ -13,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.style.display = "none";
         registerForm.style.display = "block";
         formTitle.textContent = "Sign up";
+        loginError.textContent = "";
+        loginError.classList.remove("active");
     });
 
     // Chuyển sang form đăng nhập
@@ -21,38 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         registerForm.style.display = "none";
         loginForm.style.display = "block";
         formTitle.textContent = "Log in";
+        registerError.textContent = "";
+        registerError.classList.remove("active");
     });
-
-    // Xử lý đăng ký
-    document.addEventListener("DOMContentLoaded", function () {
-        const registerForm = document.getElementById("register-form");
-        registerForm.addEventListener("submit", function (event) {
-            const password = document.getElementById("register-password").value;
-            const confirmPassword = document.getElementById("register-confirm-password").value;
-
-            if (password !== confirmPassword) {
-                event.preventDefault(); // Dừng form nếu mật khẩu không khớp
-                alert("Mật khẩu không khớp! Vui lòng nhập lại.");
-            }
-        });
-    });
-
-
-    // Xử lý đăng nhập
-    document.addEventListener("DOMContentLoaded", function () {
-        const loginForm = document.getElementById("login-form");
-
-        if (loginForm) {
-            loginForm.addEventListener("submit", function (event) {
-                const username = document.getElementById("login-username").value.trim();
-                const password = document.getElementById("login-password").value.trim();
-
-                if (username === "" || password === "") {
-                    event.preventDefault(); // Ngăn form gửi đi nếu có lỗi
-                    alert("Vui lòng nhập đầy đủ thông tin đăng nhập!");
-                }
-            });
-        }
-    });
-
 });
