@@ -7,6 +7,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Role'] !== 'admin') {
 }
 require_once(__DIR__ . '/../includes/functions.php');
 require_once(__DIR__ . '/../bootstrap.php');
+include("../includes/database.php");
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +61,30 @@ require_once(__DIR__ . '/../bootstrap.php');
 
                 <div class="chart-box">
                     <h3>TỔNG SỐ TRẬN TRONG THÁNG</h3>
-                    <canvas id="chartMatches"></canvas>
+                    <?php
+
+                    $qr = "SELECT * FROM user";
+
+                    $kq = mysqli_query($conn, $qr);
+
+                    ?>
+
+
+                    <div class="leaderboard">
+
+                        <ul id="leaderboard-list">
+                            <li>ID || User Name || Password || Role || Score || Win</li>
+                            <?php
+                            while ($d = mysqli_fetch_array($kq)) {
+                            ?>
+                                <li><?= $d['ID'];
+                                    echo ' || ';
+                                    $d['userName']; ?> <span><?= $d['Score']; ?></span></li>
+                            <?php
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="chart-box">
