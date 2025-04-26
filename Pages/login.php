@@ -15,7 +15,8 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_user']) && isset($_COO
         if ($cookiePass === $row['password']) {
             $_SESSION['user'] = [
                 'ID' => $row['ID'],
-                'Username' => $cookieUser
+                'Username' => $cookieUser,
+                'Role' => $row['role']
             ];
             header("Location: home.php");
             exit();
@@ -61,7 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register-submit'])) {
                 $newID = mysqli_insert_id($conn);
                 $_SESSION['user'] = [
                     'ID' => $newID,
-                    'Username' => $userName
+                    'Username' => $userName,
+                    'Role' => $userRole,
                 ];
                 header('Location: home.php');
                 exit();
@@ -87,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
         if (password_verify($password, $hashedPassword)) {
             $_SESSION['user'] = [
                 'ID' => $row['ID'],
-                'Username' => $userName
+                'Username' => $userName,
+                'Role' => $row['role'] // <-- sửa ở đây
             ];
 
             // ✅ Nếu chọn Remember me -> lưu cookie trong 1 ngày
@@ -96,7 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
                 setcookie("remember_pass", $row['password'], time() + 86400, "/");
             }
 
-            header("Location: home.php");
+            // ✅ Chuyển trang tùy theo role
+            if ($row['role'] === 'admin') {
+                header("Location: admin.php");
+            } else {
+                header("Location: home.php");
+            }
             exit();
         } else {
             $error = "Mật khẩu không đúng!";

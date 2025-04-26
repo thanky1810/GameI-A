@@ -1,6 +1,10 @@
 <?php
-session_start();
 
+session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user']['Role'] !== 'admin') {
+    http_response_code(404);
+    die("404 Not Found");
+}
 require_once(__DIR__ . '/../includes/functions.php');
 require_once(__DIR__ . '/../bootstrap.php');
 ?>
@@ -30,9 +34,6 @@ require_once(__DIR__ . '/../bootstrap.php');
         </aside>
 
         <section class="main-content">
-            <div class="top-bar">
-                <button class="logout-btn">📁 Đăng xuất</button>
-            </div>
 
             <div class="stats">
                 <div class="stat-card">
