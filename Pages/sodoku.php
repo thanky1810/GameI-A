@@ -61,10 +61,46 @@ require_once(__DIR__ . '/../bootstrap.php');
         </div>
 
         <h2>Bảng kỷ lục</h2>
+        <?php
+
+        $qr = "SELECT * FROM user 
+                    ORDER BY Score DESC";
+
+        $kq = mysqli_query($conn, $qr);
+
+        ?>
+
+        <div class="leaderboard">
+            <ul id="leaderboard-list">
+                <?php
+                while ($d = mysqli_fetch_array($kq)) {
+                ?>
+                    <li><?= $d['userName']; ?> <span><?= $d['Score']; ?>đ</span></li>
+                <?php
+                }
+                ?>
+            </ul>
+        </div>
+
         <div class="leaderboard">
             <ul id="leaderboard-list"></ul>
         </div>
+        
+        <!-- Modal chọn chế độ chơi -->
+        <div class="mode-popup" id="modePopup">
+            <div class="mode-content">
+                <button id="closeModeBtn" class="close-btn">❌</button>
+                <h2>Chọn chế độ chơi</h2>
+                <div class="game-mode">
+                    <button id="btn-easy-mode" data-mode="easy">Dễ (4x4)</button>
+                    <button id="btn-medium-mode" data-mode="medium">Trung bình (6x6)</button>
+                    <button id="btn-hard-mode" data-mode="hard">Khó (9x9)</button>
+                </div>
+                <button id="startGameBtn" class="start-btn">Bắt đầu</button>
+            </div>
+        </div>
 
+        
         <div class="info">
             <div class="info-text">
                 <p>Sudoku là một trò chơi trí tuệ đầy thử thách, đặc biệt ở các cấp độ khó, nơi bạn cần phải suy luận chính xác để điền số vào từng ô trống. Chính sự logic và chiến lược trong từng bước đi khiến Sudoku trở thành một trò chơi hấp dẫn và cuốn hút!</p>
@@ -84,5 +120,6 @@ require_once(__DIR__ . '/../bootstrap.php');
 
 </body>
 <script src="../assets/js/game.js"></script>
+<script src="../assets/js/sodoku.js"></script>
 
 </html>

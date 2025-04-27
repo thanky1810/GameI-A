@@ -53,7 +53,7 @@ if (!defined('IS_LOCAL')) {
     define(
         'IS_LOCAL',
         $server_name === 'localhost' ||
-            $server_name === '192.168.1.11' ||
+            $server_name === '192.168.1.8' ||
             strpos($server_name, '172.20.') === 0 ||
             strpos($server_addr, '172.20.') === 0
     );
