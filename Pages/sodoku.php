@@ -15,7 +15,7 @@ require_once(__DIR__ . '/../bootstrap.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="stylesheet" href="<?= asset('css/game.css') ?>">
 </head>
 
 <body>
@@ -85,7 +85,7 @@ require_once(__DIR__ . '/../bootstrap.php');
         <div class="leaderboard">
             <ul id="leaderboard-list"></ul>
         </div>
-        
+
         <!-- Modal chọn chế độ chơi -->
         <div class="mode-popup" id="modePopup">
             <div class="mode-content">
@@ -100,7 +100,7 @@ require_once(__DIR__ . '/../bootstrap.php');
             </div>
         </div>
 
-        
+
         <div class="info">
             <div class="info-text">
                 <p>Sudoku là một trò chơi trí tuệ đầy thử thách, đặc biệt ở các cấp độ khó, nơi bạn cần phải suy luận chính xác để điền số vào từng ô trống. Chính sự logic và chiến lược trong từng bước đi khiến Sudoku trở thành một trò chơi hấp dẫn và cuốn hút!</p>
@@ -119,7 +119,7 @@ require_once(__DIR__ . '/../bootstrap.php');
 
 
 </body>
-<script src="../assets/js/game.js"></script>
-<script src="../assets/js/sodoku.js"></script>
+<script src="<?= asset('hs/game.js') ?>"></script>
+<script src="<?= asset('js/sodoku.js') ?>"></script>
 
 </html>

@@ -15,22 +15,20 @@ require_once(__DIR__ . '/../bootstrap.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/minGame.css">
-    <link rel="stylesheet" href="../assets/css/caro.css">
+    <link rel="stylesheet" href="<?= asset('css/minGame.css') ?>">
 </head>
 
 <body>
     <!-- Header -->
     <?php
-    include "../includes/header.php"
+    include "../includes/header.php";
     ?>
     <main>
         <h1>Dò mìn<span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
             <button class="back" id="backButton">
-                <<< /button>
-                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-                    <button class="btn play-btn">Đầu hàng</button>
+                <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
+                <button class="btn play-btn">Đầu hàng</button>
         </div>
 
         <!-- Thêm phần hiển thị thời gian và kết quả -->
@@ -49,19 +47,27 @@ require_once(__DIR__ . '/../bootstrap.php');
         <div class="rules-popup" id="rulesPopup">
             <div class="rules-content">
                 <button id="closeRulesBtn" class="close-btn">❌</button>
-                <h2>Quy tắc trò cờ ca rô</h2>
-                <p>Trò chơi cờ ca rô phổ biến, về mặt logic tương tự như trò chơi bàn cờ có nguồn gốc từ Trung Quốc là Gomoku. Trò chơi được chơi trên một bàn cờ hình vuông, 15x15 ô vuông.</p>
-                <h3>Mục tiêu của trò chơi</h3>
-                <p>Trở thành người đầu tiên xếp một hàng bằng năm ký hiệu liên nhau (hoặc nhiều hơn) theo bất kỳ hướng nào: theo chiều ngang, chiều dọc, đường chéo.</p>
-                <h3>Tiến trình trò chơi</h3>
+                <h2>Quy tắc trò chơi Dò Mìn</h2>
+                <p>Dò Mìn là một trong những trò chơi máy tính nổi tiếng nhất trong thể loại trí não giải đố.</p>
+                <p>Kích thước của sân chơi thay đổi tùy thuộc vào độ khó đã chọn:</p>
                 <ul>
-                    <li>Người chơi nhận được các ký hiệu từ hai lựa chọn có thể: chữ thập và dấu hình tròn.</li>
-                    <li>Người chơi đầu tiên đi bất kỳ ô nào của bàn cờ là người chơi có chữ thập.</li>
-                    <li>Những nước đi tiếp theo được thực hiện luân phiên bởi người chơi.</li>
+                    <li>“Người mới bắt đầu” với sân chơi 10x10 ô;</li>
+                    <li>“Nghiệp dư” với sân chơi 15x15 ô;</li>
+                    <li>“Chuyên nghiệp” với sân chơi 20x20 ô.</li>
+                </ul>
+                delete <h3>Mục tiêu của trò chơi</h3>
+                <p>Mở tất cả các ô không chứa mìn.</p>
+                <h3>Tiến trình trận đấu</h3>
+                <ul>
+                    <li>Trên sân chơi chứa ba loại ô khác nhau: ô trống, “ô có gài mìn” và ô có chỉ dẫn số;</li>
+                    <li>Mỗi chữ số tương ứng với số lượng mìn trong các ô tại những khu vực lân cận. Do đó, người chơi sẽ có thể xác định vị trí các ô trống và ô đã được gài mìn;</li>
+                    <li>Số lượng mìn được chỉ ra trong cửa sổ bên cạnh sân chơi. Chúng có thể có 11, 29 hoặc 51;</li>
+                    <li>Các quả mìn chỉ được phân phối đến ô sau nước đi đầu tiên, vì vậy không thể nào bị thua ngay sau nước đầu tiên;</li>
+                    <li>Trong trường hợp khi có ô trống bên cạnh ô đã mở, thì ô đó sẽ tự động mở ra;</li>
+                    <li>Để cho quá trình chơi thoải mái hơn, các ô “đã gài mìn” có thể được đánh dấu bằng những lá cờ. Để thực hiện việc này, hãy nhấn nút chuột phải (hoặc bấm vào ô trong 1 giây đối với thiết bị di động). Điều này sẽ ngăn chặn việc vô tình nhấp vào các ô có mìn.</li>
                 </ul>
                 <h3>Chung kết</h3>
-                <p>Trò chơi có thể kết thúc trong hai trường hợp: khi năm dấu chữ thập hoặc năm dấu hình tròn được thu thập trong một hàng hoặc khi không còn ô trống trên bàn cờ.</p>
-                <p>Người chiến thắng là người đầu tiên xây dựng một hàng gồm năm ký hiệu liên nhau trở lên. Trong trường hợp bàn cờ được lấp kín hoàn toàn và người chơi vẫn chưa xếp được hàng, thì sẽ có kết quả là hòa.</p>
+                <p>Trò chơi chỉ được coi là kết thúc thành công khi tất cả các ô “không có mìn” đều được mở ra. Trò chơi coi như thua trong trường hợp khi mở phải ô có mìn.</p>
             </div>
         </div>
 
@@ -73,8 +79,9 @@ require_once(__DIR__ . '/../bootstrap.php');
         </div>
         <div style="text-align: center; margin-bottom: 10px;">
             <p>Mìn còn lại: <span id="mine_count">15</span></p>
-            <button onclick="restartGame()">🔄 Chơi lại</button>
+            <button id="restartButton" onclick="restartGame()" style="display: none;">🔄 Chơi lại</button>
         </div>
+
 
     </main>
 
@@ -82,9 +89,8 @@ require_once(__DIR__ . '/../bootstrap.php');
     <?
     include "../includes/footer.php"
     ?>
-    <script src="../assets/js/pGame.js"></script>
-    <script type="text/javascript" src="../assets/js/min-main.js"></script>
-    <script type="text/javascript" src="../assets/js/contants.js"></script>
+    <script src="<?= asset('js/pGame.js') ?>pGame.js"></script>
+    <script type="text/javascript" src="<?= asset('js/min-game.js') ?>"></script>
 </body>
 
 </html>
