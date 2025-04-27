@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (!isset($_SESSION["user"])) {
     http_response_code(404);
     die("404 Not Found");
@@ -15,7 +16,7 @@ require_once(__DIR__ . '/../bootstrap.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="stylesheet" href="<?= asset('css/game.css') ?>">
 </head>
 
 <body>
@@ -25,9 +26,8 @@ require_once(__DIR__ . '/../bootstrap.php');
         <h1>DÒ MÌN<span class="stars">⭐⭐⭐⭐⭐</span></h1>
         <div class="buttons">
             <button class="back" id="backButton">
-                <<< /button>
-                    <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
-                    <button class="btn play-btn" data-url="minGame.php">Bắt đầu chơi</button>
+                <button class="btn rule-btn" id="showRulesBtn">Quy tắc</button>
+                <button class="btn play-btn" id="startMinBtn">Bắt đầu chơi</button>
         </div>
 
         <!-- Bảng Quy tắc Modal -->
@@ -42,7 +42,7 @@ require_once(__DIR__ . '/../bootstrap.php');
                     <li>“Nghiệp dư” với sân chơi 15x15 ô;</li>
                     <li>“Chuyên nghiệp” với sân chơi 20x20 ô.</li>
                 </ul>
-                <h3>Mục tiêu của trò chơi</h3>
+                delete <h3>Mục tiêu của trò chơi</h3>
                 <p>Mở tất cả các ô không chứa mìn.</p>
                 <h3>Tiến trình trận đấu</h3>
                 <ul>
@@ -59,10 +59,27 @@ require_once(__DIR__ . '/../bootstrap.php');
         </div>
 
         <h2>Bảng kỷ lục</h2>
-        <div class="leaderboard">
-            <ul id="leaderboard-list"></ul>
-        </div>
+        <?php
 
+        $qr = "SELECT * FROM user 
+                    ORDER BY Score DESC";
+
+        $kq = mysqli_query($conn, $qr);
+
+        ?>
+
+
+        <div class="leaderboard">
+            <ul id="leaderboard-list">
+                <?php
+                while ($d = mysqli_fetch_array($kq)) {
+                ?>
+                    <li><?= $d['userName']; ?> <span><?= $d['Score']; ?>đ</span></li>
+                <?php
+                }
+                ?>
+            </ul>
+        </div>
         <div class="info">
             <div class="info-text">
                 <p>Trò chơi Dò Mìn, xuất hiện từ rất lâu trước khi phát minh ra máy tính, cũng là một trong những trò chơi trí não logic phổ biến nhất đối với người dùng Windows.</p>
@@ -78,8 +95,14 @@ require_once(__DIR__ . '/../bootstrap.php');
 
     <!-- Footer -->
     <?php include "../includes/footer.php" ?>
+    <script>
+        document.getElementById("startMinBtn").onclick = () => {
+            // Điều hướng đến file chơi game
+            window.location.href = "minGame.php";
 
+        };
+    </script>
 </body>
-<script src="../assets/js/game.js"></script>
+<script src="<?= asset('js/game.js') ?>"></script>
 
 </html>
