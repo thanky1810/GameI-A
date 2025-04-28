@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../game/CaroGame.php';
 
-header('Content-Type: application/json');
+header('Content-Type: application/json'); //Trả kết quả về client dưới dạng JSON.
 
 // Tắt hiển thị lỗi và ghi lỗi vào log
 ini_set('display_errors', 0);
@@ -14,12 +14,12 @@ ini_set('error_log', 'D:/App/XAMPP/logs/php_error_log');
 // Hàm trả về JSON và thoát
 function sendResponse($data, $statusCode = 200)
 {
-    http_response_code($statusCode);
+    http_response_code($statusCode); //return Not Found
     echo json_encode($data);
     exit;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
+$data = json_decode(file_get_contents('php://input'), true); // read all document client send to server, decode to transform form JSON to array 
 if (!$data) {
     sendResponse(['error' => 'Dữ liệu đầu vào không hợp lệ'], 400);
 }
@@ -41,18 +41,18 @@ if ($action === 'move') {
         sendResponse(['error' => 'Nước đi không hợp lệ'], 400);
     }
 
-    // PvE: Lấy trạng thái game từ session
+
     if ($type === 'player-computer') {
-        if (!isset($_SESSION['caro_games']) || !isset($_SESSION['caro_games'][$gameId])) {
+        if (!isset($_SESSION['caro_games']) || !isset($_SESSION['caro_games'][$gameId])) { //Check if the session saves the game state.
             sendResponse(['error' => 'Game không tồn tại trong session'], 400);
         }
 
         $game = &$_SESSION['caro_games'][$gameId];
-        if ($game['board'][$row][$col] !== '' || $game['currentPlayer'] !== $symbol) {
+        if ($game['board'][$row][$col] !== '' || $game['currentPlayer'] !== $symbol) { // check if the area were clicked and match symbol
             sendResponse(['error' => 'Nước đi không hợp lệ'], 400);
         }
 
-        // Cập nhật nước đi của người chơi
+        // update player moves
         $game['board'][$row][$col] = $symbol;
         $caroGame = new CaroGame();
         $winningCells = [];

@@ -124,7 +124,7 @@ class CaroGame {
         }
     }
 
-    handleTwoPlayerMove(row, col) {
+    handleTwoPlayerMove(row, col) { //Playing 2 players, send moves to the server to synchronize with the opponent.
         this.board[row][col] = this.playerSymbol;
         this.lastBoardState = JSON.stringify(this.board);
         CaroUI.renderBoard(this.board);
@@ -281,7 +281,7 @@ class CaroGame {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { // game initialization
     const game = new CaroGame();
     window.game = game;
     game.init();

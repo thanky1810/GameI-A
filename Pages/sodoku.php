@@ -16,6 +16,7 @@ require_once(__DIR__ . '/../bootstrap.php');
     <title>GAME I&R Online</title>
     <link rel="shortcut icon" href="../assets/img/10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="<?= asset('css/game.css') ?>">
+    <script src="<?= asset('js/game.js') ?>"></script>
 </head>
 
 <body>
@@ -119,7 +120,8 @@ require_once(__DIR__ . '/../bootstrap.php');
 
 
 </body>
-<script src="<?= asset('hs/game.js') ?>"></script>
+
+<script src="<?= asset('js/game.js') ?>"></script>
 <script src="<?= asset('js/sodoku.js') ?>"></script>
 
 </html>

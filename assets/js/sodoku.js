@@ -1,3 +1,4 @@
+assets / js / sodoku.js
 class SudokuGame {
     constructor() {
         this.board = [];
