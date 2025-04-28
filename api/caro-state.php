@@ -25,7 +25,7 @@ $action = $data['action'] ?? '';
 $type = $data['type'] ?? 'player-computer';
 
 if ($action === 'new_game') {
-    $gameId = uniqid();
+    $gameId = uniqid(); //auto-generated ID
     $board = array_fill(0, 15, array_fill(0, 15, ''));
     $symbol = 'X';
     $opponentSymbol = 'O';
