@@ -1,0 +1,220 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #0b0f19;
+  color: white;
+  margin: 0;
+}
+
+h1 {
+  color: white;
+  line-height: 1em;
+  margin: 10px 0;
+  padding-bottom: 5px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+h2 {
+  color: white;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.1em;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  padding: 0;
+  margin: 10px 0 2px 0;
+}
+
+table {
+  margin: 2% auto;
+  border-collapse: collapse;
+}
+
+#table_game {
+  position: relative;
+  font-size: 20px;
+  margin: 1% auto;
+  border-collapse: collapse;
+}
+
+#table_game td {
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+#table_game td:hover {
+  background-color: #e0e0e0;
+}
+
+#table_game td:active {
+  background-color: #d0d0d0;
+}
+
+#table_game td.x {
+  color: #e74c3c; /* Màu đỏ cho X */
+}
+
+#table_game td.o {
+  color: #2ecc71; /* Màu xanh lá cho O */
+}
+
+#table_game td.winning-cell {
+  background-color: #ffeb3b !important;
+  animation: blink 1s infinite;
+}
+
+.stars {
+  margin-left: 10px;
+  font-size: 30px;
+  color: #ffd700;
+  letter-spacing: 5px;
+}
+
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.game-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+#back-button {
+  background-color: #555;
+  color: white;
+}
+
+#surrender-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.game-info {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+
+.td_game {
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.fixed {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.td_list {
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.th_list {
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: underline;
+}
+
+#restart {
+  font-size: 3em;
+  width: 1em;
+  height: 0.9em;
+  cursor: pointer;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.x {
+  color: darksalmon;
+  position: relative;
+  font-size: 0.9em !important;
+  cursor: default;
+}
+
+.o {
+  color: aquamarine;
+  position: relative;
+  font-size: 0.8em !important;
+  cursor: default;
+}
+
+.modal-content {
+  background-color: rgb(240, 240, 240);
+  color: rgb(32, 32, 32);
+  font-size: 2em;
+  font-weight: bold;
+  margin: 16% auto;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 380px;
+  max-width: 80%;
+}
+
+.modal-content p {
+  margin: 0;
+  padding: 0;
+}
+
+.close {
+  color: rgb(170, 170, 170);
+  float: right;
+  position: relative;
+  top: -25px;
+  right: -10px;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.win-color {
+  background-color: rgb(240, 240, 240);
+}
+
+.winning-cell {
+  background-color: #ffeb3b !important;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.6;
+  }
+}

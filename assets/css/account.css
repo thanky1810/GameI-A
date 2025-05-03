@@ -1,0 +1,182 @@
+@import url(./main.css);
+
+/* Body and Main */
+body {
+  background-color: var(--background-color);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0px;
+}
+
+/* Account Info Section */
+#account-info {
+  background: #1e2633;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 900px;
+  padding: 20px;
+}
+
+/* Account Header */
+.account-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3a4d66;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  line-height: 2;
+}
+
+/* Avatar Styling */
+.avatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+/* Edit Avatar Icon */
+.edit-avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  padding: 5px;
+  display: none;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.avatar:hover .edit-avatar {
+  display: block;
+}
+
+.edit-avatar img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s;
+}
+
+.avatar:hover .edit-avatar img {
+  transform: scale(1);
+}
+
+/* Edit Icon for Username */
+.edit-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* User Details */
+.user-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-details h2 {
+  font-size: 1.5rem;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+
+.user-details p {
+  font-size: 1.1rem;
+  color: #157c34;
+}
+
+/* Username Section */
+#username {
+  display: flex;
+  align-items: center;
+}
+
+#username .edit-icon {
+  margin-left: 10px;
+}
+
+.edit-username-form {
+  display: inline;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Back Home Button */
+.back-home {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background-color: #66b6db79;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 40px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #81b4f6;
+}
+
+/* Stats Section */
+.stats {
+  padding: 20px;
+  background: #2c3e50;
+  border-radius: 10px;
+}
+
+.stats h3 {
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 15px;
+}
+
+.stats ul {
+  list-style: none;
+  padding: 0;
+  line-height: 3;
+}
+
+.stats li {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #aaa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats li span.label {
+  color: #66b6db;
+  font-weight: bold;
+}
+
+.stats li span {
+  color: var(--white);
+}

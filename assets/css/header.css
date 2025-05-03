@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--text--font);
+}
+
+a {
+  text-decoration: none; /* Loại bỏ gạch chân */
+  color: inherit; /* Kế thừa màu sắc từ phần tử cha */
+}
+
+a:visited {
+  color: inherit; /* Đặt màu sắc giống với liên kết chưa truy cập */
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  padding: 10px 50px;
+  height: 60px;
+}
+
+span {
+  padding-top: 30px;
+  font-family: var(--text--font);
+  color: var(--text);
+}
+
+.logo img {
+  height: 80px;
+  margin-right: 10px;
+}
+
+.login-btn a {
+  color: yellow;
+  text-decoration: none;
+  font-weight: bolder;
+  font-size: 14px;
+}
+
+.logo {
+  display: flex;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar img {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#user-top-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 5px 10px;
+  border: 2px solid #66b6db;
+  border-radius: 5px;
+  background-color: #1e2633;
+  cursor: default;
+}
+.menu-toggle {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  margin-left: 10px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #1e2633;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px solid #333;
+}
+
+.dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+  background: #66b6db;
+}

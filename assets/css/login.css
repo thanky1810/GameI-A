@@ -1,0 +1,167 @@
+/* styles.css - Giao diện Neon Gaming */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+@import url(./main.css);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: url(../img/1.jpg) no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: black;
+  color: var(--white);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.home-btn:hover {
+  background: var(--white);
+  color: black;
+}
+
+.container {
+  position: relative;
+  width: 400px;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+}
+
+h2 {
+  color: var(--white);
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input {
+  padding: 12px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--white);
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--white);
+  color: black;
+}
+
+p {
+  color: #ccc;
+  margin-top: 10px;
+}
+
+a {
+  color: cyan;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--white);
+}
+
+/* Form login and register */
+.form-group {
+  display: flex;
+  font-size: 1.25rem;
+  position: relative;
+  --primary: #2196f3;
+  color: white;
+}
+
+.label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: #d4d4d4;
+  pointer-events: none;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-field {
+  all: unset;
+  width: 90%;
+  color: #fefefe;
+  padding: 1rem;
+  border: 1px solid #9e9e9e;
+  border-radius: 10px;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-field:focus {
+  border: 1px solid var(--primary);
+}
+
+.input-field:is(:focus, :valid) ~ .label {
+  transform: translateY(-100%) scale(0.7);
+  background: rgba(0, 0, 0, 0.7);
+  padding-inline: 0.3rem;
+  color: var(--primary);
+}
+
+/* Error Message */
+.error-message {
+  color: #ffffff;
+  background: rgba(255, 75, 75, 0.1);
+  border: 1px solid #ff4d4d;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: center;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.error-message.active {
+  display: block;
+}

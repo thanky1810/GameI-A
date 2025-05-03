@@ -1,0 +1,227 @@
+@import url(./main.css);
+body {
+  background: #0b0f19;
+  color: white;
+  font-size: 16px;
+}
+
+/* Main content */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  width: 100%;
+  padding-left: 90px;
+  padding-top: 50px;
+}
+
+.stars {
+  color: gold;
+}
+
+.buttons {
+  padding-left: 900px;
+  margin: 20px 0;
+}
+
+/* Nút Lùi */
+.back {
+  font-size: 1.5rem;
+  background: #03040500;
+  color: white;
+  border: none;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.rule-btn {
+  font-weight: bolder;
+  background-color: #3a4d66;
+  color: white;
+  margin-right: 10px;
+}
+
+.play-btn {
+  font-weight: bolder;
+  background-color: #ff7e7ec8;
+  color: rgb(0, 0, 0);
+}
+
+/* Game Info Styles */
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+.timer,
+.current-result {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.timer span,
+.current-result span {
+  color: #66b6db;
+}
+
+/* Game Board Styles */
+.board {
+  display: grid;
+  grid-template-columns: repeat(15, 40px); /* 15 columns */
+  grid-template-rows: repeat(15, 40px); /* 15 rows */
+  gap: 2px;
+  margin-top: 20px;
+}
+
+.board div {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #7f8c8d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #34495e;
+  transition: background-color 0.2s;
+}
+
+.board div.x {
+  color: blue;
+}
+
+.board div.o {
+  color: red;
+}
+
+.board div:hover {
+  background-color: #2c3e50;
+}
+
+/* Bảng Quy tắc */
+.rules-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.rules-content {
+  background: linear-gradient(135deg, #2e4d70f1, #0b2651e9);
+  color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 1000px;
+  position: relative;
+  font-weight: bold;
+}
+
+.close-btn {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #ff4d4d;
+  border: none;
+  background: transparent;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+}
+
+.rules-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: rgb(248, 255, 33);
+}
+
+.rules-content p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.rules-content ul {
+  list-style-type: disc;
+  margin-left: 30px;
+  font-size: 1.1rem;
+}
+
+.rules-content ul li {
+  margin-bottom: 10px;
+}
+/* Footer */
+footer {
+    background: black;
+    padding: 30px;
+    font-size: 1rem;
+    color: #bbb;
+    text-align: left;
+    line-height: 2;
+  }
+  
+  .copyright {
+    text-align: right;
+  }
+  /* Style for the table cells */
+  .td_game {
+    width: 40px; /* Fixed width for each cell */
+    height: 40px; /* Fixed height for each cell */
+    padding: 0; /* Remove padding to ensure the div takes full space */
+    text-align: center; /* Center the content */
+    vertical-align: middle; /* Center vertically */
+  }
+  
+  /* Style for the div inside each cell */
+  .td_game .fixed {
+    width: 100%; /* Take full width of the td */
+    height: 100%; /* Take full height of the td */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #ccc; /* Default background for unrevealed cells */
+    cursor: pointer; /* Indicate the cell is clickable */
+  }
+  
+  /* Style for opened cells */
+  .td_game .opened {
+    background-color: #fff; /* White background for opened cells */
+  }
+  
+  /* Style for cells with mines */
+  .td_game .mine {
+    background-color: #ff4d4d; /* Red background for mines */
+    font-size: 20px; /* Adjust the font size of the bomb icon */
+    line-height: 40px; /* Match the height of the cell to center vertically */
+  }
+  
+  /* Style for numbers in cells */
+  .td_game .fixed:not(.mine) {
+    font-size: 16px; /* Font size for numbers */
+    color: #333; /* Color for numbers */
+  }
