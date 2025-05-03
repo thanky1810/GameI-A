@@ -82,7 +82,7 @@ if (isset($_POST['edit_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin1</title>
+    <title>Admin</title>
     <link rel="shortcut icon" href="10.jpg" type="image/x-icon">
     <link rel="stylesheet" href="<?= asset('css/admin.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/modal.css') ?>">
