@@ -4,7 +4,8 @@ require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../game/sudokuGenerator.php';
 header('Content-Type: application/json');
 
-function sendResponse($data, $statusCode = 200) {
+function sendResponse($data, $statusCode = 200)
+{
     http_response_code($statusCode);
     echo json_encode($data);
     exit;
@@ -41,4 +42,3 @@ if ($action === 'new_game') {
 } else {
     sendResponse(['error' => 'Invalid action'], 400);
 }
-?>

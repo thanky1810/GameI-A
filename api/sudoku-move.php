@@ -3,7 +3,8 @@ session_start();
 require_once __DIR__ . '/../includes/database.php';
 header('Content-Type: application/json');
 
-function sendResponse($data, $statusCode = 200) {
+function sendResponse($data, $statusCode = 200)
+{
     http_response_code($statusCode);
     echo json_encode($data);
     exit;
@@ -93,4 +94,3 @@ if ($action === 'move') {
 } else {
     sendResponse(['error' => 'Invalid action'], 400);
 }
-?>

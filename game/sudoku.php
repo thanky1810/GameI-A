@@ -28,4 +28,3 @@ echo json_encode([
     "correct" => $correct,
     "finished" => $finished
 ]);
-?>

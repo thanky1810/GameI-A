@@ -57,6 +57,7 @@ $conn = mysqli_connect("localhost", "root", "", "game-a");
 
             if ($_SESSION['user']['Role'] === 'admin') {
                 echo '<a href="' . getCorrectUrl('Pages/admin.php') . '">⚙️ Manage</a>';
+                echo '<a href="' . getCorrectUrl('Pages/account.php') . '">👤 Profile</a>';
             } else {
                 echo '<a href="' . getCorrectUrl('Pages/account.php') . '">👤 Profile</a>';
             }

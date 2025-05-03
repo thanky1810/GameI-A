@@ -4,13 +4,6 @@ class CaroGame
 {
     private $boardSize = 15;
 
-    public function __construct()
-    {
-        // Constructor
-    }
-
-
-    
     /**
      * Kiểm tra thắng/thua
      */
@@ -64,21 +57,6 @@ class CaroGame
             }
         }
         return false;
-    }
-
-    /**
-     * Kiểm tra hòa
-     */
-    public function checkDraw($board)
-    {
-        for ($i = 0; $i < $this->boardSize; $i++) {
-            for ($j = 0; $j < $this->boardSize; $j++) {
-                if ($board[$i][$j] === '') {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**
